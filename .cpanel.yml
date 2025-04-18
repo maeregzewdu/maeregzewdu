@@ -2,4 +2,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/maeregqx/public_html
+    - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R * $DEPLOYPATH
+    - /bin/cd $DEPLOYPATH && /usr/local/cpanel/3rdparty/bin/composer install --no-dev
+    - /bin/chmod 755 $DEPLOYPATH/storage -R
