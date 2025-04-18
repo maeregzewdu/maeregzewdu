@@ -14,7 +14,7 @@ Route::get('/', function () {
 Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
 Route::post('/lead', [LeadController::class, 'store'])->name('lead.store');
 Route::get('/login', [SessionController::class, 'create'])->name('login');
-Route::post('/login', [SessionController::class, 'store'])->name('login');
+Route::post('/login', [SessionController::class, 'store'])->name('login.store');
 Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 Route::post('/user-info/update', [UserController::class, 'update'])->name('user-info.update');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
