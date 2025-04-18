@@ -3,7 +3,23 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/maeregqx/public_html
     - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R * $DEPLOYPATH
+    # Copy contents from the public folder to the public_html folder
     - /bin/cp -R /home/maeregqx/repositories/maeregzewdu/public/* $DEPLOYPATH
-    - cd $DEPLOYPATH && /usr/local/cpanel/3rdparty/bin/composer install --no-dev
+    # Run composer to install dependencies
+    - cd $DEPLOYPATH && composer install --no-dev --optimize-autoloader
+    # Set the correct permissions for storage and bootstrap/cache
     - chmod -R 755 $DEPLOYPATH/storage
+    - chmod -R 755 $DEPLOYPATH/bootstrap/cache
+    # Set the correct permissions for vendor folder (optional, if it's inside the public_html folder)
+    - chmod -R 755 $DEPLOYPATH/vendor
+    # Clear the config cache
+    - php artisan config:clear
+    - php artisan route:clear
+    - php artisan view:clear
+    # Run migrations and seed the database (optional)
+    - php artisan migrate --force
+    - php artisan db:seed --force
+    # Cache everything for production
+    - php artisan config:cache
+    - php artisan route:cache
+    - php artisan view:cache
