@@ -7,6 +7,7 @@ import PricingComponent from './components/PricingComponent.vue';
 import ProjectShowcaseComponent from './components/ProjectShowcaseComponent.vue';
 import NotificationManager from './components/NotificationManager.vue';
 import ContactFormComponent from './components/ContactFormComponent.vue';
+import DashboardComponent from './components/DashboardComponent.vue';
 
 // Expose notification function globally
 window.showGlobalNotification = null;
@@ -29,6 +30,11 @@ if (document.getElementById('portfolio-app')) {
 // Mount the contact form component if the element exists
 if (document.getElementById('contact-form-app')) {
     createApp(ContactFormComponent).mount("#contact-form-app");
+}
+
+// Mount the dashboard component if the element exists
+if (document.getElementById('dashboard-app')) {
+    createApp(DashboardComponent).mount("#dashboard-app");
 }
 
 // Mount the notification manager
