@@ -4,5 +4,6 @@ deployment:
     - export DEPLOYPATH=/home/maeregqx/public_html
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -R /home/maeregqx/repositories/maeregzewdu/public/* $DEPLOYPATH
     - cd $DEPLOYPATH && /usr/local/cpanel/3rdparty/bin/composer install --no-dev
     - chmod -R 755 $DEPLOYPATH/storage
