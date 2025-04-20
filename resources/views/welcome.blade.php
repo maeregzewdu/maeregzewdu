@@ -20,7 +20,7 @@
             margin: 0;
             padding: 0;
         }
-        h1, h2, h3, h4, h5, h6, a, button {
+        h1, h2, h3, h4, h5, h6, a, button, .price {
             font-family: 'Russo One', sans-serif;
         }
         .nav-link {
@@ -109,56 +109,188 @@
             background: rgba(245, 208, 97, 0.1);
             transform: translateY(-2px);
         }
+        
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 49;
+            padding: 6rem 2rem 2rem;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+        }
+        
+        .mobile-menu a {
+            display: block;
+            padding: 1rem;
+            font-size: 1.25rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .mobile-menu .cta-button {
+            margin-top: 1.5rem;
+            width: 80%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 60;
+            position: relative;
+        }
+        
+        header {
+            z-index: 55;
+        }
+        
+        #menu-toggle {
+            z-index: 60;
+        }
+        
+        @media (max-width: 1024px) {
+            .desktop-menu {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .glass-nav {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem !important;
+            }
+            
+            .glass-nav {
+                margin-top: 1rem;
+                border-radius: 0.5rem;
+                padding: 0.75rem 1.5rem;
+            }
+            
+            .logo-img {
+                width: 150px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero-buttons button {
+                width: 100%;
+            }
+            
+            .logo-img {
+                width: 120px;
+            }
+        }
     </style>
 </head>
 
 <body class="bg-[#0F172A] text-white">
     <!-- Notification Component Mount Point -->
     <div id="notification-app"></div>
+
+    <!-- Cookie Consent Component Mount Point -->
+    <div id="cookie-consent-app"></div>
     
     <!-- Flash Messages Container (Hidden) -->
     @if(session('success'))
         <div id="laravel-success-message" data-message="{{ session('success') }}" class="hidden"></div>
     @endif
 
-    <header class="fixed w-full z-50">
-        <nav class="glass-nav w-full flex justify-between items-center px-10 py-5 mx-auto max-w-[1270px] rounded-xl mt-6 shadow-lg backdrop-blur-xl bg-opacity-30 border border-white/10">
-            <a href="#home" class="text-2xl">
-                <img src="images/logo/gold-logo.svg" alt="Maereg Zewdu Logo" class="w-[200px] hover:opacity-90 transition-opacity">
-            </a>
-            <div class="flex items-center gap-8">
-                <div class="space-x-8">
-                    <a href="#home" class="nav-link text-gray-300 font-russo hover:text-white transition-colors text-sm">Home</a>
-                    <a href="#services" class="nav-link text-gray-300 font-russo hover:text-white transition-colors text-sm">Services</a>
-                    <a href="#portfolio" class="nav-link text-gray-300 font-russo hover:text-white transition-colors text-sm">Portfolio</a>
-                    <a href="#pricing" class="nav-link text-gray-300 font-russo hover:text-white transition-colors text-sm">Pricing</a>
-                </div>
-                <a href="#contact" class="cta-button bg-[#F5D061] text-black px-5 py-2 rounded-full font-russo text-sm">
-                    Get in touch
+    <header class="fixed w-full z-40">
+        <nav class="w-full">
+            <div class="flex justify-between items-center px-4 sm:px-6 md:px-10 py-4 md:py-5 mx-auto max-w-[1270px] lg:rounded-xl lg:mt-4 shadow-lg backdrop-blur-xl bg-opacity-30 border border-white/10 bg-black/30">
+                <a href="#home" class="text-2xl">
+                    <img src="images/logo/gold-logo.svg" alt="Maereg Zewdu Logo" class="w-[120px] sm:w-[150px] md:w-[200px] logo-img hover:opacity-90 transition-opacity">
                 </a>
+    
+                <!-- Desktop Menu -->
+                <div class="desktop-menu hidden lg:flex items-center gap-4 md:gap-8">
+                    <div class="space-x-4 md:space-x-8">
+                        <a href="#home" class="nav-link text-gray-300 font-russo hover:text-white transition-colors text-sm">Home</a>
+                        <a href="#services" class="nav-link text-gray-300 font-russo hover:text-white transition-colors text-sm">Services</a>
+                        <a href="#portfolio" class="nav-link text-gray-300 font-russo hover:text-white transition-colors text-sm">Portfolio</a>
+                        <a href="#pricing" class="nav-link text-gray-300 font-russo hover:text-white transition-colors text-sm">Pricing</a>
+                    </div>
+                    <a href="#contact" class="cta-button bg-[#F5D061] text-black px-5 py-2 rounded-full font-russo text-sm">
+                        Get in touch
+                    </a>
+                </div>
+    
+                <!-- Mobile Menu Button -->
+                <div class="hamburger">
+                    <button id="menu-toggle" class="text-white p-2 relative w-10 h-10 flex items-center justify-center focus:outline-none">
+                        <span class="sr-only">Toggle menu</span>
+                        <i id="menu-icon-open" class="ri-menu-line text-2xl"></i>
+                        <i id="menu-icon-close" class="ri-close-line text-2xl hidden"></i>
+                    </button>
+                </div>
             </div>
         </nav>
-    </header>
+    
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu">
+            <button id="mobile-menu-close" class="absolute top-6 right-6 text-white p-2 focus:outline-none">
+                <i class="ri-close-line text-3xl"></i>
+            </button>
+            <a href="#home" class="nav-link text-gray-300 font-russo hover:text-white transition-colors">Home</a>
+            <a href="#services" class="nav-link text-gray-300 font-russo hover:text-white transition-colors">Services</a>
+            <a href="#portfolio" class="nav-link text-gray-300 font-russo hover:text-white transition-colors">Portfolio</a>
+            <a href="#pricing" class="nav-link text-gray-300 font-russo hover:text-white transition-colors">Pricing</a>
+            <a href="#contact" class="cta-button mt- bg-[#F5D061] text-black px-5 py-2 rounded-full font-russo text-center">
+                Get in touch
+            </a>
+        </div>
+    </header>    
 
     <!-- Hero Section -->
-    <section id="home" class="hero-gradient min-h-screen flex items-center pt-[120px]">
+    <section id="home" class="hero-gradient h-screen lg:pt-26 flex items-center">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                <div class="space-y-10">
-                    <h1 class="text-7xl font-russo leading-tight">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-20 items-center">
+                <div class="space-y-6 md:space-y-10">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-russo leading-tight">
                         Crafting Digital
                         <span class="gradient-text block">Experiences</span>
                         That Inspire
                     </h1>
-                    <p class="text-xl text-gray-300 max-w-xl leading-relaxed">
+                    <p class="text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed">
                         I build modern, responsive websites that help businesses grow online.
                     </p>                    
-                    <div class="flex gap-6">
-                        <button onclick="window.location.href = '#portfolio'" class="cta-button bg-[#F5D061] cursor-pointer text-black px-10 py-4 rounded-full font-russo text-lg">
+                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 hero-buttons">
+                        <!-- Primary Button -->
+                        <button onclick="window.location.href = '#portfolio'" 
+                            class="cta-button w-full sm:w-auto bg-[#F5D061] text-black px-6 sm:px-10 py-3 sm:py-4 rounded-full font-russo text-base sm:text-lg transition-all duration-300 hover:bg-[#f5d061]/90">
                             View My Work
                         </button>
-                        <button onclick="window.location.href = '#contact'" class="glass-nav cursor-pointer border border-[#F5D061]/30 px-10 py-4 rounded-full font-russo text-lg hover:bg-[#F5D061]/10 transition-all duration-300 group">
-                            <span class="flex items-center gap-2">
+                    
+                        <!-- Secondary Button -->
+                        <button onclick="window.location.href = '#contact'" 
+                            class="w-full sm:w-auto border border-[#F5D061]/30 px-6 sm:px-10 py-3 sm:py-4 rounded-full font-russo text-base sm:text-lg hover:bg-[#F5D061]/10 transition-all duration-300 group text-white">
+                            <span class="flex items-center justify-center gap-2">
                                 Let's Connect
                                 <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -166,8 +298,9 @@
                             </span>
                         </button>
                     </div>
+                    
                 </div>
-                <div class="relative">
+                <div class="relative hidden sm:block">
                     <div class="floating">
                         <div class="glass-nav p-8 rounded-xl">
                             <div class="bg-[#1A2332] text-left p-6 rounded-lg shadow-md">
@@ -216,43 +349,43 @@
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-24 bg-[#0F172A]">
+    <section id="services" class="py-16 md:py-24 bg-[#0F172A]">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-russo mb-4">What I Do</h2>
+            <div class="text-center mb-10 md:mb-16">
+                <h2 class="text-3xl md:text-4xl font-russo mb-3 md:mb-4">What I Do</h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">I specialize in creating modern, responsive websites that help businesses establish their online presence and achieve their goals.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 <!-- Web Development -->
-                <div class="glass-nav p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
-                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
+                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
                         <svg class="w-6 h-6 text-[#F5D061]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-russo mb-4">Web Development</h3>
+                    <h3 class="text-xl font-russo mb-3 md:mb-4">Web Development</h3>
                     <p class="text-gray-400">Custom websites built with modern technologies like Laravel, Vue.js, and Tailwind CSS, ensuring fast, secure, and scalable solutions.</p>
                 </div>
 
                 <!-- UI/UX Design -->
-                <div class="glass-nav p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
-                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
+                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
                         <svg class="w-6 h-6 text-[#F5D061]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-russo mb-4">UI/UX Design</h3>
+                    <h3 class="text-xl font-russo mb-3 md:mb-4">UI/UX Design</h3>
                     <p class="text-gray-400">Creating beautiful, intuitive interfaces that provide exceptional user experiences and drive engagement.</p>
                 </div>
 
                 <!-- Responsive Design -->
-                <div class="glass-nav p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
-                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
+                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
                         <svg class="w-6 h-6 text-[#F5D061]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-russo mb-4">Responsive Design</h3>
+                    <h3 class="text-xl font-russo mb-3 md:mb-4">Responsive Design</h3>
                     <p class="text-gray-400">Ensuring your website looks and functions perfectly across all devices, from mobile phones to desktop computers.</p>
                 </div>
             </div>
@@ -263,40 +396,43 @@
     <div id="portfolio-app"></div>
 
     <!-- Pricing Section - Vue.js Component Mount Point -->
-    <div id="pricing-app"></div>
+    <div id="pricing-app"
+        data-plans='@json($plans)'
+        data-my-info='@json($myInfo)'>
+    </div>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 bg-[#0F172A] relative overflow-hidden">
+    <section id="contact" class="py-16 md:py-24 bg-[#0F172A] relative overflow-hidden">
         <!-- Background Elements -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-[#F5D061]/5 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#F5D061]/5 rounded-full blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#F5D061]/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#F5D061]/5 rounded-full blur-3xl"></div>
         </div>
 
         <div class="container mx-auto px-4 relative">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-russo mb-4">Let's Work Together</h2>
+            <div class="text-center mb-10 md:mb-16">
+                <h2 class="text-3xl md:text-4xl font-russo mb-3 md:mb-4">Let's Work Together</h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Have a project in mind? Let's discuss how we can bring your ideas to life.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
                 <!-- Contact Form - Vue.js Component Mount Point -->
                 <div id="contact-form-app"></div>
 
                 <!-- Contact Information -->
-                <div class="space-y-8">
-                    <div class="glass-nav p-8 rounded-xl border border-white/10">
-                        <h3 class="text-2xl font-russo mb-6">Contact Information</h3>
-                        <div class="space-y-6">
+                <div class="space-y-6 md:space-y-8">
+                    <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10">
+                        <h3 class="text-xl md:text-2xl font-russo mb-4 md:mb-6">Contact Information</h3>
+                        <div class="space-y-4 md:space-y-6">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-[#F5D061]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="w-10 h-10 md:w-12 md:h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 md:w-6 md:h-6 text-[#F5D061]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                     </svg>
                                 </div>
                                 <div>
                                     <h4 class="text-gray-300 font-medium">Email</h4>
-                                    <a href="mailto:contact@example.com" class="text-[#F5D061] hover:underline">info@maeregzewdu.com</a>
+                                    <a href="mailto:{{ $myInfo->email }}" class="text-[#F5D061] hover:underline">{{ $myInfo->email }}</a>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4">
@@ -307,7 +443,7 @@
                                 </div>
                                 <div>
                                     <h4 class="text-gray-300 font-medium">Phone</h4>
-                                    <a href="tel:+251912345678" class="text-[#F5D061] hover:underline">+251 965 598 182</a>
+                                    <a href="tel:{{ $myInfo->phone }}" class="text-[#F5D061] hover:underline">{{ $myInfo->phone }}</a>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4">
@@ -319,57 +455,28 @@
                                 </div>
                                 <div>
                                     <h4 class="text-gray-300 font-medium">Location</h4>
-                                    <a class="text-gray-400">Addis Ababa, Ethiopia</a>
+                                    <a class="text-gray-400">{{ $myInfo->address }}</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Social Links -->
-                    <div class="glass-nav p-8 rounded-xl border border-white/10">
-                        <h3 class="text-2xl font-russo mb-6">Follow Me</h3>
-                        <div class="flex gap-4">
-                            <a href="https://t.me/maeregzewdu" target="_blank" class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/20 transition-colors">
-                                <i class="ri-telegram-fill text-[#F5D061] text-2xl"></i>
-                            </a>
-                            <a href="https://www.instagram.com/_maereg" target="_blank" class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/20 transition-colors">
-                                <i class="ri-instagram-fill text-[#F5D061] text-2xl"></i>
-                            </a>
-                            <a href="https://wa.me/251965598182" target="_blank" class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/20 transition-colors">
-                                <i class="ri-whatsapp-fill text-[#F5D061] text-2xl"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/maeregzewdu" target="_blank" class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/20 transition-colors">
-                                <i class="ri-linkedin-fill text-[#F5D061] text-2xl"></i>
-                            </a>
-                        </div>
-                    </div>
+                    @include('components.social-links-enhanced')
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer Section -->
-    <footer class="bg-[#0A1020] border-t border-white/5 py-16">
+    <footer class="bg-[#0A1020] border-t border-white/5 py-10 md:py-16">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
                 <!-- Logo & Info -->
-                <div class="space-y-6">
-                    <img src="images/logo/gold-logo.svg" alt="Maereg Zewdu Logo" class="w-[180px]">
+                <div class="space-y-4 md:space-y-6">
+                    <img src="images/logo/gold-logo.svg" alt="Maereg Zewdu Logo" class="w-[150px] md:w-[180px]">
                     <p class="text-gray-400 text-sm">Creating digital experiences that inspire and drive business growth.</p>
-                    <div class="flex gap-3">
-                        <a href="https://t.me/maeregzewdu" target="_blank" class="w-10 h-10 bg-[#F5D061]/10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/20 transition-colors">
-                            <i class="ri-telegram-fill text-[#F5D061] text-lg"></i>
-                        </a>
-                        <a href="https://www.instagram.com/_maereg" target="_blank" class="w-10 h-10 bg-[#F5D061]/10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/20 transition-colors">
-                            <i class="ri-instagram-fill text-[#F5D061] text-lg"></i>
-                        </a>
-                        <a href="https://wa.me/251965598182" target="_blank" class="w-10 h-10 bg-[#F5D061]/10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/20 transition-colors">
-                            <i class="ri-whatsapp-fill text-[#F5D061] text-lg"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/maeregzewdu" target="_blank" class="w-10 h-10 bg-[#F5D061]/10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/20 transition-colors">
-                            <i class="ri-linkedin-fill text-[#F5D061] text-lg"></i>
-                        </a>
-                    </div>
+                    @include('components.social-links-compact')
                 </div>
 
                 <!-- Quick Links -->
@@ -402,23 +509,23 @@
                     <ul class="space-y-4">
                         <li class="flex items-center gap-3">
                             <i class="ri-map-pin-line text-[#F5D061] mt-1"></i>
-                            <a class="text-gray-400">Addis Ababa, Ethiopia</a>
+                            <a class="text-gray-400">{{ $myInfo->address }}</a>
                         </li>
                         <li class="flex items-center gap-3">
                             <i class="ri-mail-line text-[#F5D061] mt-1"></i>
-                            <a href="mailto:info@maeregzewdu.com" class="text-gray-400 hover:text-[#F5D061] transition-colors">info@maeregzewdu.com</a>
+                            <a href="mailto:{{ $myInfo->email }}" class="text-gray-400 hover:text-[#F5D061] transition-colors">{{ $myInfo->email }}</a>
                         </li>
                         <li class="flex items-center gap-3">
                             <i class="ri-phone-line text-[#F5D061] mt-1"></i>
-                            <a href="tel:+251965598182" class="text-gray-400 hover:text-[#F5D061] transition-colors">+251 965 598 182</a>
+                            <a href="tel:{{ $myInfo->phone }}" class="text-gray-400 hover:text-[#F5D061] transition-colors">{{ $myInfo->phone }}</a>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-white/5 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-500 text-sm mb-4 md:mb-0">&copy; 2025 Maereg Zewdu. All rights reserved.</p>
-                <div class="flex items-center gap-6">
+            <div class="border-t border-white/5 mt-8 md:mt-12 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">&copy; {{ date('Y') }} {{ $myInfo->name }}. All rights reserved.</p>
+                <div class="flex items-center gap-4 md:gap-6">
                     <a href="#" class="text-gray-500 hover:text-[#F5D061] text-sm transition-colors">Privacy Policy</a>
                     <a href="#" class="text-gray-500 hover:text-[#F5D061] text-sm transition-colors">Terms of Service</a>
                 </div>
@@ -426,6 +533,75 @@
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleMenu();
+                });
+            }
+            
+            // Close button inside mobile menu
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', function() {
+                    closeMenu();
+                });
+            }
+            
+            // Close mobile menu when clicking a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    closeMenu();
+                });
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (mobileMenu.classList.contains('active') && 
+                    !mobileMenu.contains(e.target) && 
+                    !menuToggle.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+            
+            // Prevent clicks inside the mobile menu from closing it
+            mobileMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Helper functions for menu operations
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+                menuIconOpen.classList.toggle('hidden');
+                menuIconClose.classList.toggle('hidden');
+                document.body.classList.toggle('overflow-hidden');
+            }
+            
+            function closeMenu() {
+                mobileMenu.classList.remove('active');
+                menuIconOpen.classList.remove('hidden');
+                menuIconClose.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+            
+            // Laravel flash message handling
+            const successMessage = document.getElementById('laravel-success-message');
+            if (successMessage && successMessage.dataset.message) {
+                // This assumes you have a notification Vue component
+                // You would need to implement this part based on your notification system
+                console.log('Success message:', successMessage.dataset.message);
+            }
+        });
+    </script>
 </body>
 
 </html>

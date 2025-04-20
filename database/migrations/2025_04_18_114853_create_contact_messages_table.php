@@ -18,8 +18,17 @@ return new class extends Migration
             $table->string('phone');
             $table->string('subject');
             $table->text('message');
-            $table->boolean('is_read')->default(false);
+            $table->enum('status', ['unread', 'read', 'archived', 'deleted'])->default('unread');
             $table->timestamps();
+
+            // Index for created_at (used in ordering and date filtering)
+            $table->index('created_at');
+            
+            // Index for status (used in filtering)
+            $table->index('status');
+            
+            // Composite index for search fields
+            $table->index(['name', 'email', 'subject']);
         });
     }
 

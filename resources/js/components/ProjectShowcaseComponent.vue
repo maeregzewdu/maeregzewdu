@@ -192,14 +192,14 @@
 
                 <!-- Navigation Arrows -->
                 <button @click="prevSlide"
-                    class="group absolute cursor-pointer left-32 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/5 hover:bg-[#F5D061]/30 transition-all duration-300">
+                    class="group absolute cursor-pointer left-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/5 hover:bg-[#F5D061]/30 transition-all duration-300">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
                         </path>
                     </svg>
                 </button>
                 <button @click="nextSlide"
-                    class="group absolute cursor-pointer right-32 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/5 hover:bg-[#F5D061]/30 transition-all duration-300">
+                    class="group absolute cursor-pointer right-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/5 hover:bg-[#F5D061]/30 transition-all duration-300">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>

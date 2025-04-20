@@ -29,11 +29,17 @@ export default {
                 actionText: 'Explore Projects',
                 callback: null
             },
-            hasShownWelcome: false
+            hasShownWelcome: localStorage.getItem('welcome_notification_shown') === 'true'
         }
     },
     methods: {
         showNotification(options = {}) {
+            // Check if cookies are accepted
+            const cookieConsent = localStorage.getItem('cookie_consent_status');
+            if (cookieConsent !== 'accepted') {
+                return; // Don't show notifications if cookies aren't accepted
+            }
+
             // Merge default options with provided options
             this.notification = {
                 ...this.notification,
@@ -57,6 +63,12 @@ export default {
             }
         },
         checkForFlashMessages() {
+            // Check if cookies are accepted
+            const cookieConsent = localStorage.getItem('cookie_consent_status');
+            if (cookieConsent !== 'accepted') {
+                return; // Don't show flash messages if cookies aren't accepted
+            }
+
             // Check if there's a success message in Laravel's session
             const successElement = document.getElementById('laravel-success-message')
             if (successElement) {
@@ -81,10 +93,15 @@ export default {
         this.checkForFlashMessages()
         
         // Then show welcome notification after a delay, but only if no flash message was shown
+        // and cookies are accepted and welcome notification hasn't been shown before
         setTimeout(() => {
-            if (!document.getElementById('laravel-success-message')) {
+            const cookieConsent = localStorage.getItem('cookie_consent_status');
+            if (!document.getElementById('laravel-success-message') && 
+                cookieConsent === 'accepted' && 
+                !this.hasShownWelcome) {
                 this.showNotification()
                 this.hasShownWelcome = true
+                localStorage.setItem('welcome_notification_shown', 'true')
             }
         }, 1500)
         

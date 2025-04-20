@@ -90,16 +90,19 @@ export default {
                 message: ''
             },
             errors: {},
-            isSubmitting: false
+            isSubmitting: false,
+            loading: false,
+            error: null,
+            success: false
         }
     },
     methods: {
         async submitForm() {
             this.isSubmitting = true
             this.errors = {}
-            
-            // Get the CSRF token
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            this.loading = true
+            this.error = null
+            this.success = false
             
             try {
                 const response = await fetch('/contact', {
@@ -107,25 +110,20 @@ export default {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'X-CSRF-TOKEN': token
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify(this.form)
                 })
                 
                 const data = await response.json()
                 
-                if (response.ok) {
-                    // Show success message via the notification system
-                    if (window.showGlobalNotification) {
-                        window.showGlobalNotification({
-                            title: 'Success!',
-                            message: 'Thank you for your message! I will get back to you as soon as possible.',
-                            duration: 5000,
-                            actionText: 'OK'
-                        })
-                    }
-                    
-                    // Reset form
+                if (response.status === 422) {
+                    this.errors = data.errors || {}
+                    throw new Error(data.message || 'Validation failed')
+                }
+
+                if (data.success) {
+                    this.success = true
                     this.form = {
                         name: '',
                         email: '',
@@ -133,25 +131,29 @@ export default {
                         phone: '',
                         message: ''
                     }
+                    // Show success notification using global function
+                    window.showGlobalNotification?.({
+                        title: 'Success!',
+                        message: data.message || 'Your message has been sent successfully!',
+                        duration: 5000,
+                        actionText: ''
+                    })
                 } else {
-                    // Handle validation errors
-                    if (data.errors) {
-                        this.errors = data.errors
-                    }
+                    throw new Error(data.message || 'Failed to send message')
                 }
             } catch (error) {
-                // Show error notification
-                if (window.showGlobalNotification) {
-                    window.showGlobalNotification({
-                        title: 'Error',
-                        message: 'Something went wrong. Please try again later.',
-                        duration: 5000,
-                        actionText: 'OK'
-                    })
-                }
                 console.error('Error submitting form:', error)
+                this.error = error.message || 'An unexpected error occurred. Please try again.'
+                // Show error notification using global function
+                window.showGlobalNotification?.({
+                    title: 'Error',
+                    message: this.error,
+                    duration: 5000,
+                    actionText: ''
+                })
             } finally {
                 this.isSubmitting = false
+                this.loading = false
             }
         }
     }

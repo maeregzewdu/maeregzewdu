@@ -21,7 +21,7 @@
             padding: 0;
             background-color: #0F172A;
         }
-        h1, h2, h3, h4, h5, h6, a, button {
+        h1, h2, h3, h4, h5, h6, a, button, label {
             font-family: 'Russo One', sans-serif;
         }
         .glass-nav {

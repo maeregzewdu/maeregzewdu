@@ -77,14 +77,21 @@
                 <div class="absolute -z-10 top-0 right-0 w-64 h-64 bg-[#F5D061]/5 rounded-full blur-[100px] animate-pulse-slow"></div>
                 <div class="absolute -z-10 bottom-0 left-0 w-64 h-64 bg-[#F5D061]/5 rounded-full blur-[100px] animate-pulse-slow"></div>
                 
-                @if ($errors->any())
-                <div class="bg-red-500/20 border border-red-500/50 rounded-lg p-4 mb-6">
-                    <ul class="list-disc list-inside text-sm text-red-200">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                @if($errors->has('login_attempts'))
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center">
+                        <i class="ri-lock-line text-base text-red-500"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-red-700">{{ $errors->first('login_attempts') }}</p>
+                    </div>
+                @elseif ($errors->any())
+                    <div class="bg-red-500/20 border border-red-500/50 rounded-lg p-4 mb-6">
+                        <ul class="list-disc list-inside text-sm text-red-200">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
 
                 <form method="POST" action="{{ route('login') }}" class="space-y-6">

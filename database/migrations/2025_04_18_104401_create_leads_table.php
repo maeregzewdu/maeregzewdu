@@ -16,9 +16,25 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('phone');
-            $table->text('description')->nullable();
+            $table->text('message')->nullable();
             $table->string('plan');
+            $table->enum('status', ['new', 'contacted', 'qualified', 'converted', 'rejected', 'lost'])->default('new');
+            $table->string('source')->nullable();
+            $table->ipAddress('ip_address')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
+
+            // Index for created_at (used in ordering and date filtering)
+            $table->index('created_at');
+            
+            // Index for status (used in filtering)
+            $table->index('status');
+            
+            // Index for plan (used in filtering)
+            $table->index('plan');
+            
+            // Composite index for search fields
+            $table->index(['name', 'email', 'phone']);
         });
     }
 

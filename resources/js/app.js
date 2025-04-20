@@ -8,6 +8,7 @@ import ProjectShowcaseComponent from './components/ProjectShowcaseComponent.vue'
 import NotificationManager from './components/NotificationManager.vue';
 import ContactFormComponent from './components/ContactFormComponent.vue';
 import DashboardComponent from './components/DashboardComponent.vue';
+import CookieConsent from './components/CookieConsent.vue';
 
 // Expose notification function globally
 window.showGlobalNotification = null;
@@ -19,7 +20,14 @@ if (document.getElementById('app')) {
 
 // Mount the pricing component if the element exists
 if (document.getElementById('pricing-app')) {
-    createApp(PricingComponent).mount("#pricing-app");
+    const el = document.getElementById('pricing-app');
+    const plans = JSON.parse(el.dataset.plans);
+    const myInfo = JSON.parse(el.dataset.myInfo);
+
+    createApp(PricingComponent, {
+        plans,
+        myInfo
+    }).mount("#pricing-app");
 }
 
 // Mount the project showcase component if the element exists
@@ -35,6 +43,10 @@ if (document.getElementById('contact-form-app')) {
 // Mount the dashboard component if the element exists
 if (document.getElementById('dashboard-app')) {
     createApp(DashboardComponent).mount("#dashboard-app");
+}
+
+if (document.getElementById('cookie-consent-app')) {
+    createApp(CookieConsent).mount("#cookie-consent-app");
 }
 
 // Mount the notification manager
