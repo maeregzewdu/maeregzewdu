@@ -66,7 +66,12 @@ class SessionController extends Controller
     {
         // Clear any user-specific caches
         if ($user = Auth::user()) {
-            Cache::tags(['user_' . $user->id])->flush();
+            Cache::forget('dashboard_data_' . $user->id);
+            Cache::forget('leads_' . $user->id);
+            Cache::forget('filtered_leads_' . $user->id);
+            Cache::forget('plans_' . $user->id);
+            Cache::forget('my_info_' . $user->id);
+            Cache::forget('social_links_' . $user->id);
         }
 
         Auth::logout();

@@ -136,11 +136,9 @@
             </div>
             
             <!-- Back to site link -->
-            <div class="text-center mt-8">
+            <div class="text-center mt-8 relative z-10">
                 <a href="/" class="text-gray-300 hover:text-white text-sm flex items-center justify-center gap-1 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
+                    <i class="ri-arrow-left-line"></i>
                     Back to home
                 </a>
             </div>
@@ -148,8 +146,8 @@
     </div>
     
     <!-- Add floating decoration element -->
-    <div class="fixed -bottom-24 -right-24 w-96 h-96 bg-[#F5D061]/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-    <div class="fixed -top-24 -left-24 w-96 h-96 bg-[#F5D061]/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+    <div class="fixed -bottom-24 -right-24 w-96 h-96 bg-[#F5D061]/5 rounded-full blur-[120px] animate-pulse-slow -z-10"></div>
+    <div class="fixed -top-24 -left-24 w-96 h-96 bg-[#F5D061]/5 rounded-full blur-[120px] animate-pulse-slow -z-10"></div>
 </body>
 
 </html> 

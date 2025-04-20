@@ -1,5 +1,5 @@
 <template>
-    <div class="dashboard-container bg-[#0F172A] min-h-screen text-white">
+    <div class="dashboard-container bg-[#0F172A] min-h-[90vh] text-white">
         <!-- Overlay for blur effect -->
         <div v-if="!sidebarCollapsed && windowWidth < 640" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
             @click="toggleSidebar">
@@ -120,7 +120,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="main-content transition-all duration-300 px-4 sm:px-6 h-screen" :class="{
+        <div class="main-content transition-all duration-300 px-4 sm:px-6 h-[90vh]" :class="{
             'ml-0 mt-8': windowWidth < 640,
             'overflow-hidden': !sidebarCollapsed && windowWidth < 640,
             'overflow-y-auto': sidebarCollapsed || windowWidth >= 640,
@@ -250,7 +250,7 @@ export default {
     },
     data() {
         return {
-            sidebarCollapsed: false,
+            sidebarCollapsed: this.getSidebarState(),
             windowWidth: typeof window !== 'undefined' ? window.innerWidth : 1024,
             leadCount: 0,
             contactCount: 0,
@@ -321,9 +321,35 @@ export default {
     },
 
     methods: {
+        // Cookie handling methods
+        setCookie(name, value, days = 365) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        },
+
+        getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        },
+
+        getSidebarState() {
+            const savedState = this.getCookie('sidebarCollapsed');
+            return savedState ? savedState === 'true' : true;
+        },
+
         toggleSidebar() {
             this.sidebarCollapsed = !this.sidebarCollapsed;
+            this.setCookie('sidebarCollapsed', this.sidebarCollapsed);
         },
+
         handleResize() {
             this.windowWidth = window.innerWidth;
         },
