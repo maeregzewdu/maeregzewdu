@@ -514,22 +514,23 @@
     <section id="home" class="hero-gradient h-screen lg:pt-26 flex items-center">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-20 items-center">
-                <div class="space-y-6 md:space-y-10">
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-russo leading-tight slide-in-left">
-                        Crafting Digital
-                        <span class="gradient-text block">Experiences</span>
-                        That Inspire
+                <div class="space-y-3 md:space-y-6">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[65px] font-russo leading-tight slide-in-left">
+                        Smart Solutions  
+                        <span class="gradient-text block">Built to Impress</span>
                     </h1>
-                    <p class="text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed slide-in-left" style="transition-delay: 0.2s;">
-                        I build modern, responsive websites that help businesses grow online.
-                    </p>                    
+                    
+                    <p class="text-base sm:text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed slide-in-left" style="transition-delay: 0.2s;">
+                        I craft clean, effective websites that solve problems and make brands shine.
+                    </p>
+                    
                     <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 hero-buttons slide-in-left" style="transition-delay: 0.4s;">
                         <!-- Primary Button -->
                         <button onclick="window.location.href = '#portfolio'" 
                             class="cta-button w-full sm:w-auto bg-[#F5D061] text-black px-6 sm:px-10 py-3 sm:py-4 rounded-full font-russo text-base sm:text-lg transition-all duration-300 hover:bg-[#f5d061]/90">
                             View My Work
                         </button>
-                    
+                
                         <!-- Secondary Button -->
                         <button onclick="window.location.href = '#contact'" 
                             class="w-full sm:w-auto border border-[#F5D061]/30 px-6 sm:px-10 py-3 sm:py-4 rounded-full font-russo text-base sm:text-lg hover:bg-[#F5D061]/10 transition-all duration-300 group text-white">
@@ -541,8 +542,8 @@
                             </span>
                         </button>
                     </div>
-                    
-                </div>
+                </div>                
+                
                 <div class="relative hidden sm:block slide-in-right">
                     <div class="floating">
                         <div class="glass-nav p-8 rounded-xl">
