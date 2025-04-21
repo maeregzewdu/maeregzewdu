@@ -163,6 +163,12 @@ export default {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        // Add visible class to section title first
+                        const sectionTitle = entry.target.querySelector('.section-title');
+                        if (sectionTitle) {
+                            sectionTitle.classList.add('visible');
+                        }
+
                         // Add visible class to form elements with staggered delay
                         const formGroups = entry.target.querySelectorAll('.form-group');
                         const submitButton = entry.target.querySelector('.submit-button');
@@ -171,13 +177,13 @@ export default {
                         formGroups.forEach((group, index) => {
                             setTimeout(() => {
                                 group.classList.add('visible');
-                            }, 100 * index);
+                            }, 200 + (100 * index));
                         });
                         
                         // Animate submit button last
                         setTimeout(() => {
                             if (submitButton) submitButton.classList.add('visible');
-                        }, 100 * formGroups.length);
+                        }, 200 + (100 * formGroups.length));
                         
                         // Unobserve after animation
                         observer.unobserve(entry.target);
