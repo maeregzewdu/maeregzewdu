@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Maereg Zewdu - Web Designer and Developer</title>
+    <meta name="description" content="Crafting modern, responsive websites that help businesses grow online. Let’s bring your digital ideas to life." />
+    <meta property="og:title" content="Maereg Zewdu – Web Designer and Developer" />
+    <meta property="og:description" content="Crafting modern, responsive websites that help businesses grow online." />
+    <meta property="og:url" content="https://maeregzewdu.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://maeregzewdu.com/images/logo/gold-logo.svg" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="images/logo/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="{{ url('images/logo/favicon.png') }}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

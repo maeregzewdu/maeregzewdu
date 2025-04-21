@@ -55,6 +55,7 @@ Route::post('/contact', [ContactMessageController::class, 'store'])->name('conta
 Route::post('/lead', [LeadController::class, 'store'])->name('lead.store');
 Route::get('/login', [SessionController::class, 'create'])->name('login')->middleware('guest');
 Route::post('/login', [SessionController::class, 'store'])->name('login.store')->middleware(['guest', 'login-rate-limiter']);
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('/privacy-policy', function () {
     $socialLinks = SocialLink::all();
     $myInfo = MyInfo::first();
@@ -63,7 +64,6 @@ Route::get('/privacy-policy', function () {
 
 // Dashboard API Routes
 Route::middleware('auth')->prefix('api')->group(function() {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/data', [DashboardController::class, 'getDashboardData'])->name('api.dashboard.data');
     Route::get('/dashboard/leads', [DashboardController::class, 'getLeads'])->name('api.dashboard.leads');
     Route::get('/dashboard/messages', [DashboardController::class, 'getMessages'])->name('api.dashboard.messages');
