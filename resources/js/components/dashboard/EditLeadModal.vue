@@ -50,9 +50,9 @@
                                 class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
                                 required
                             >
-                                <option value="Basic">Basic</option>
-                                <option value="Pro">Pro</option>
-                                <option value="Enterprise">Enterprise</option>
+                                <option value="basic">Basic</option>
+                                <option value="pro">Pro</option>
+                                <option value="enterprise">Enterprise</option>
                             </select>
                         </div>
                     </div>
@@ -98,6 +98,84 @@
                             type="text" 
                             class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
                         >
+                    </div>
+
+                    <!-- Location Information -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div class="space-y-1 sm:space-y-2">
+                            <label class="text-xs sm:text-sm text-gray-300">IP Address</label>
+                            <input 
+                                v-model="editedLead.ip_address" 
+                                type="text" 
+                                class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
+                                placeholder="192.168.1.1"
+                            >
+                        </div>
+                        <div class="space-y-1 sm:space-y-2">
+                            <label class="text-xs sm:text-sm text-gray-300">City</label>
+                            <input 
+                                v-model="editedLead.city" 
+                                type="text" 
+                                class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
+                                placeholder="City"
+                            >
+                        </div>
+                        <div class="space-y-1 sm:space-y-2">
+                            <label class="text-xs sm:text-sm text-gray-300">Region</label>
+                            <input 
+                                v-model="editedLead.region" 
+                                type="text" 
+                                class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
+                                placeholder="Region/State"
+                            >
+                        </div>
+                        <div class="space-y-1 sm:space-y-2">
+                            <label class="text-xs sm:text-sm text-gray-300">Country</label>
+                            <input 
+                                v-model="editedLead.country" 
+                                type="text" 
+                                class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
+                                placeholder="Country"
+                            >
+                        </div>
+                        <div class="space-y-1 sm:space-y-2">
+                            <label class="text-xs sm:text-sm text-gray-300">Country Code</label>
+                            <input 
+                                v-model="editedLead.country_code" 
+                                type="text" 
+                                class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
+                                placeholder="US"
+                            >
+                        </div>
+                        <div class="space-y-1 sm:space-y-2">
+                            <label class="text-xs sm:text-sm text-gray-300">Timezone</label>
+                            <input 
+                                v-model="editedLead.timezone" 
+                                type="text" 
+                                class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
+                                placeholder="America/New_York"
+                            >
+                        </div>
+                        <div class="space-y-1 sm:space-y-2">
+                            <label class="text-xs sm:text-sm text-gray-300">Latitude</label>
+                            <input 
+                                v-model="editedLead.latitude" 
+                                type="number" 
+                                step="any"
+                                class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
+                                placeholder="40.7128"
+                            >
+                        </div>
+                        <div class="space-y-1 sm:space-y-2">
+                            <label class="text-xs sm:text-sm text-gray-300">Longitude</label>
+                            <input 
+                                v-model="editedLead.longitude" 
+                                type="number" 
+                                step="any"
+                                class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50"
+                                placeholder="-74.0060"
+                            >
+                        </div>
                     </div>
                     
                     <!-- Form Actions -->
@@ -149,7 +227,15 @@ export default {
                 plan: '',
                 status: 'new',
                 source: '',
-                note: ''
+                note: '',
+                ip_address: '',
+                city: '',
+                region: '',
+                country: '',
+                country_code: '',
+                timezone: '',
+                latitude: '',
+                longitude: ''
             },
             isSaving: false
         }
@@ -187,6 +273,9 @@ export default {
                 }, 300);
             }
         }
+    },
+    mounted() {
+        console.log(this.lead);
     }
 }
 </script>

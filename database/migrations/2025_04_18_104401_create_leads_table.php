@@ -19,9 +19,16 @@ return new class extends Migration
             $table->text('message')->nullable();
             $table->string('plan');
             $table->enum('status', ['new', 'contacted', 'qualified', 'converted', 'rejected', 'lost'])->default('new');
-            $table->string('source')->nullable();
-            $table->ipAddress('ip_address')->nullable();
+            $table->string('source')->default('website');
             $table->text('note')->nullable();
+            $table->ipAddress('ip_address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('region')->nullable();
+            $table->string('country')->nullable();
+            $table->string('country_code', 2)->nullable();
+            $table->string('timezone')->nullable();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->timestamps();
 
             // Index for created_at (used in ordering and date filtering)

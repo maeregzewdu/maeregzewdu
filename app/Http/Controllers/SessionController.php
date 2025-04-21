@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -38,18 +37,11 @@ class SessionController extends Controller
 
         if (Auth::attempt($validatedData, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            
-            // Clear login attempts on successful login
-            Cache::forget('login_attempts_' . $request->ip());
 
             return $request->expectsJson()
                 ? response()->json(['success' => true, 'message' => 'Logged in successfully'])
                 : redirect()->intended('/dashboard');
         }
-
-        // Increment login attempts
-        $attempts = Auth::attempts() + 1;
-        Cache::put('login_attempts_' . $request->ip(), $attempts, now()->addMinutes(1));
 
         throw ValidationException::withMessages([
             'email' => [trans('auth.failed')],
@@ -64,16 +56,6 @@ class SessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        // Clear any user-specific caches
-        if ($user = Auth::user()) {
-            Cache::forget('dashboard_data_' . $user->id);
-            Cache::forget('leads_' . $user->id);
-            Cache::forget('filtered_leads_' . $user->id);
-            Cache::forget('plans_' . $user->id);
-            Cache::forget('my_info_' . $user->id);
-            Cache::forget('social_links_' . $user->id);
-        }
-
         Auth::logout();
 
         $request->session()->invalidate();
@@ -147,9 +129,6 @@ class SessionController extends Controller
             $user->update([
                 'password' => Hash::make($validatedData['new_password'])
             ]);
-
-            // Clear any user-specific caches
-            Cache::tags(['user_' . $user->id])->flush();
 
             return response()->json([
                 'success' => true,

@@ -1,8 +1,7 @@
 <template>
     <div class="space-y-6">
         <!-- Plan Filter Navigation -->
-        <div 
-            v-if="leads.length > 0" 
+        <div
             class="flex flex-wrap justify-center gap-1 sm:gap-2 mb-4"
         >
             <button 
@@ -291,6 +290,31 @@
                     <div class="bg-[#1A2332] p-3 sm:p-4 rounded-lg">
                         <h5 class="text-xs sm:text-sm font-russo mb-1 sm:mb-2 text-gray-300">Source</h5>
                         <p class="text-xs sm:text-sm text-white">{{ selectedLead.source || 'Not specified' }}</p>
+                    </div>
+                </div>
+
+                <!-- Location Information -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
+                    <div class="bg-[#1A2332] p-3 sm:p-4 rounded-lg">
+                        <h5 class="text-xs sm:text-sm font-russo mb-1 sm:mb-2 text-gray-300">IP Address</h5>
+                        <p class="text-xs sm:text-sm text-white">{{ selectedLead.ip_address || 'Not available' }}</p>
+                    </div>
+                    <div class="bg-[#1A2332] p-3 sm:p-4 rounded-lg">
+                        <h5 class="text-xs sm:text-sm font-russo mb-1 sm:mb-2 text-gray-300">Location</h5>
+                        <p class="text-xs sm:text-sm text-white">
+                            {{ selectedLead.city ? `${selectedLead.city}, ${selectedLead.region}, ${selectedLead.country}` : 'Not available' }}
+                        </p>
+                    </div>
+                    <div class="bg-[#1A2332] p-3 sm:p-4 rounded-lg">
+                        <h5 class="text-xs sm:text-sm font-russo mb-1 sm:mb-2 text-gray-300">Timezone</h5>
+                        <p class="text-xs sm:text-sm text-white">{{ selectedLead.timezone || 'Not available' }}</p>
+                    </div>
+                    <div class="bg-[#1A2332] p-3 sm:p-4 rounded-lg">
+                        <h5 class="text-xs sm:text-sm font-russo mb-1 sm:mb-2 text-gray-300">Coordinates</h5>
+                        <p class="text-xs sm:text-sm text-white">
+                            {{ selectedLead.latitude && selectedLead.longitude ? 
+                                `${selectedLead.latitude}, ${selectedLead.longitude}` : 'Not available' }}
+                        </p>
                     </div>
                 </div>
                 

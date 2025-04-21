@@ -58,7 +58,7 @@
             </div>
 
             <div class="text-center mt-10 md:mt-16">
-                <p class="text-gray-400 mb-3 md:mb-4 text-sm md:text-base cta-text">Need something different? Let's discuss your project!</p>
+                <p id="font-russo" class="text-gray-400 mb-3 md:mb-4 text-sm md:text-base cta-text">Need something different? Let's discuss your project!</p>
                 <button @click="scheduleCall" target="_blank"
                     class="cta-button cursor-pointer bg-gradient-to-r from-[#F5D061] to-[#e9b730] text-black px-6 md:px-8 py-2.5 md:py-3 rounded-full font-russo text-sm md:text-lg hover:from-[#e9b730] hover:to-[#F5D061] transition-all duration-300 shadow-lg shadow-[#F5D061]/20 transform hover:-translate-y-0.5">
                     Schedule a Call

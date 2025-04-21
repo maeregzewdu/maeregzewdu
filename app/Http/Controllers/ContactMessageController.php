@@ -4,20 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ContactMessage;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\DashboardController;
 
 class ContactMessageController extends Controller
 {
-    private $dashboardController;
-
-    public function __construct(DashboardController $dashboardController)
-    {
-        $this->dashboardController = $dashboardController;
-    }
     /**
      * Store a new contact message.
      *
@@ -45,15 +37,10 @@ class ContactMessageController extends Controller
                 $message = ContactMessage::create($validatedData);
                 DB::commit();
 
-                // Clear relevant caches
-                $this->clearMessageCaches();
-
                 $response = [
                     'success' => true, 
                     'message' => 'Thank you for your message! I will get back to you as soon as possible.'
                 ];
-
-                $this->dashboardController->clearCache();
 
                 return $request->expectsJson() 
                     ? response()->json($response)
@@ -128,10 +115,6 @@ class ContactMessageController extends Controller
             }
             
             DB::commit();
-            
-            // Clear relevant caches
-            $this->clearMessageCaches();
-            $this->dashboardController->clearCache();
 
             return response()->json([
                 'success' => true,
@@ -159,10 +142,6 @@ class ContactMessageController extends Controller
             $message->permanentlyDelete();
             DB::commit();
 
-            // Clear relevant caches
-            $this->clearMessageCaches();
-            $this->dashboardController->clearCache();
-
             return response()->json([
                 'success' => true,
                 'message' => 'Message deleted successfully'
@@ -174,19 +153,5 @@ class ContactMessageController extends Controller
                 'message' => 'Failed to delete message'
             ], 500);
         }
-    }
-
-    /**
-     * Clear all message-related caches.
-     *
-     * @return void
-     */
-    private function clearMessageCaches()
-    {
-        // Clear specific cache keys instead of using tags
-        Cache::forget('dashboard.messages');
-        Cache::forget('dashboard.recent_messages');
-        Cache::forget('dashboard.message_counts');
-        Cache::forget('messages.all');
     }
 }

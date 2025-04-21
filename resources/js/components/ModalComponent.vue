@@ -182,13 +182,46 @@ export default {
             // Set subject field from plan name
             this.form.subject = `New ${this.selectedPlan.name} Plan Inquiry`;
             
-            // Prepare form data with message field
+            // Get user's IP address and location
+            let ipAddress = '';
+            let locationInfo = {};
+            try {
+                // First get the IP address
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                ipAddress = ipData.ip;
+
+                // Then get location information
+                const locationResponse = await fetch(`https://ipapi.co/${ipAddress}/json/`);
+                const locationData = await locationResponse.json();
+                
+                if (!locationData.error) {
+                    locationInfo = {
+                        city: locationData.city,
+                        region: locationData.region,
+                        country: locationData.country_name,
+                        country_code: locationData.country_code,
+                        timezone: locationData.timezone,
+                        latitude: locationData.latitude,
+                        longitude: locationData.longitude
+                    };
+                }
+            } catch (error) {
+                console.error('Error fetching IP or location:', error);
+                // If we can't get the IP or location, we'll just send empty values
+            }
+            
+            // Prepare form data with message field, IP address, and location info
             const formData = {
                 name: this.form.name,
                 email: this.form.email,
                 phone: this.form.phone,
                 message: this.form.message,
-                plan: this.selectedPlan.name
+                plan: this.selectedPlan.name,
+                ip_address: ipAddress,
+                city: locationInfo.city,
+                region: locationInfo.region,
+                location: locationInfo
             };
             
             // Get CSRF token
