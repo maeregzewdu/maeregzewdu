@@ -11,11 +11,16 @@
     <meta property="og:description" content="Crafting modern, responsive websites that help businesses grow online." />
     <meta property="og:url" content="https://maeregzewdu.com" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://maeregzewdu.com/images/logo/gold-logo.svg" />
+    <meta property="og:image" content="{{ url('images/logo/favicon.svg') }}" />
+    <link rel="icon" type="image/png" href="{{ url('images/logo/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ url('images/logo/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ url('images/logo/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url('images/logo/apple-touch-icon.png') }}" />
+    <meta name="apple-mobile-web-app-title" content="Maereg" />
+    <link rel="manifest" href="{{ url('images/logo/site.webmanifest') }}" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="{{ url('images/logo/favicon.png') }}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
