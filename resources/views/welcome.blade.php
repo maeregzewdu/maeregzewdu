@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Maereg Zewdu - Web Solutions</title>
+    <title>Maereg Zewdu - Web Designer and Developer</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@
             margin: 0;
             padding: 0;
         }
-        h1, h2, h3, h4, h5, h6, a, button, .price {
+        h1, h2, h3, h4, h5, h6, a, button, .price, #loading-status {
             font-family: 'Russo One', sans-serif;
         }
         .nav-link {
@@ -206,10 +206,253 @@
                 width: 120px;
             }
         }
+        
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-in-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-in-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Services section animations */
+        .service-card {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(245, 208, 97, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+        
+        .service-card.visible::before {
+            opacity: 1;
+        }
+        
+        .service-icon {
+            transform: scale(0.8) rotate(-10deg);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .service-card.visible .service-icon {
+            transform: scale(1) rotate(0);
+        }
+        
+        .service-title {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition-delay: 0.2s;
+        }
+        
+        .service-card.visible .service-title {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-description {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition-delay: 0.3s;
+        }
+        
+        .service-card.visible .service-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Section title animations */
+        .section-title {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-subtitle {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition-delay: 0.2s;
+        }
+        
+        .section-subtitle.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Simple code snippet animation */
+        .code-snippet-animated {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .code-snippet-animated.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Contact section animations */
+        .contact-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .contact-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Contact info container */
+        .contact-info-container {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .contact-info-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Info title animations */
+        .info-title {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .info-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Social links animations */
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .social-link.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .social-link:hover {
+            transform: translateX(5px);
+            background: rgba(245, 208, 97, 0.1);
+            border-color: rgba(245, 208, 97, 0.3);
+        }
+
+        /* Contact details animations */
+        .info-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .info-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .info-item:hover {
+            transform: translateX(-5px);
+            background: rgba(245, 208, 97, 0.1);
+            border-color: rgba(245, 208, 97, 0.3);
+        }
     </style>
 </head>
 
 <body class="bg-[#0F172A] text-white">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0F172A]">
+        <img src="images/logo/gold-logo.svg" alt="Maereg Zewdu Logo" class="w-[150px] sm:w-[200px] mb-8 animate-pulse">
+        <div class="w-64 h-2 bg-gray-800 rounded-full overflow-hidden mb-4">
+            <div id="loading-bar" class="h-full bg-[#F5D061] rounded-full w-0 transition-all duration-300 ease-out"></div>
+        </div>
+        <p id="loading-status" class="text-gray-400 text-sm">Initializing...</p>
+    </div>
+
     <!-- Notification Component Mount Point -->
     <div id="notification-app"></div>
 
@@ -272,15 +515,15 @@
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-20 items-center">
                 <div class="space-y-6 md:space-y-10">
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-russo leading-tight">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-russo leading-tight slide-in-left">
                         Crafting Digital
                         <span class="gradient-text block">Experiences</span>
                         That Inspire
                     </h1>
-                    <p class="text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed">
+                    <p class="text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed slide-in-left" style="transition-delay: 0.2s;">
                         I build modern, responsive websites that help businesses grow online.
                     </p>                    
-                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 hero-buttons">
+                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 hero-buttons slide-in-left" style="transition-delay: 0.4s;">
                         <!-- Primary Button -->
                         <button onclick="window.location.href = '#portfolio'" 
                             class="cta-button w-full sm:w-auto bg-[#F5D061] text-black px-6 sm:px-10 py-3 sm:py-4 rounded-full font-russo text-base sm:text-lg transition-all duration-300 hover:bg-[#f5d061]/90">
@@ -300,7 +543,7 @@
                     </div>
                     
                 </div>
-                <div class="relative hidden sm:block">
+                <div class="relative hidden sm:block slide-in-right">
                     <div class="floating">
                         <div class="glass-nav p-8 rounded-xl">
                             <div class="bg-[#1A2332] text-left p-6 rounded-lg shadow-md">
@@ -309,13 +552,13 @@
                                     <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
                                     <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
                                 </div>
-                                <pre class="text-sm font-mono">
+                                <pre class="text-sm font-mono code-snippet-animated" id="code-snippet">
 <span class="text-purple-400">const</span> <span class="text-blue-400">MaeregZewdu</span> = () => {
   <span class="text-gray-400">// Crafting digital experiences</span>
   <span class="text-purple-400">const</span> <span class="text-blue-400">skills</span> = [
     <span class="text-green-400">'Laravel'</span>,
     <span class="text-green-400">'Vue.js'</span>,
-    <span class="text-green-400">'Tailwind'</span>
+    <span class="text-green-400">'Tailwind'</span>,
     <span class="text-green-400">'HTML/CSS'</span>,
   ];
 
@@ -352,41 +595,41 @@
     <section id="services" class="py-16 md:py-24 bg-[#0F172A]">
         <div class="container mx-auto px-4">
             <div class="text-center mb-10 md:mb-16">
-                <h2 class="text-3xl md:text-4xl font-russo mb-3 md:mb-4">What I Do</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">I specialize in creating modern, responsive websites that help businesses establish their online presence and achieve their goals.</p>
+                <h2 class="text-3xl md:text-4xl font-russo mb-3 md:mb-4 section-title">What I Do</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto section-subtitle">I specialize in creating modern, responsive websites that help businesses establish their online presence and achieve their goals.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 <!-- Web Development -->
-                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
-                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
+                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group service-card">
+                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors service-icon">
                         <svg class="w-6 h-6 text-[#F5D061]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-russo mb-3 md:mb-4">Web Development</h3>
-                    <p class="text-gray-400">Custom websites built with modern technologies like Laravel, Vue.js, and Tailwind CSS, ensuring fast, secure, and scalable solutions.</p>
+                    <h3 class="text-xl font-russo mb-3 md:mb-4 service-title">Web Development</h3>
+                    <p class="text-gray-400 service-description">Custom websites built with modern technologies like Laravel, Vue.js, and Tailwind CSS, ensuring fast, secure, and scalable solutions.</p>
                 </div>
 
                 <!-- UI/UX Design -->
-                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
-                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
+                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group service-card">
+                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors service-icon">
                         <svg class="w-6 h-6 text-[#F5D061]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-russo mb-3 md:mb-4">UI/UX Design</h3>
-                    <p class="text-gray-400">Creating beautiful, intuitive interfaces that provide exceptional user experiences and drive engagement.</p>
+                    <h3 class="text-xl font-russo mb-3 md:mb-4 service-title">UI/UX Design</h3>
+                    <p class="text-gray-400 service-description">Creating beautiful, intuitive interfaces that provide exceptional user experiences and drive engagement.</p>
                 </div>
 
                 <!-- Responsive Design -->
-                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group">
-                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors">
+                <div class="glass-nav p-6 md:p-8 rounded-xl border border-white/10 hover:border-[#F5D061]/30 transition-all duration-300 group service-card">
+                    <div class="w-12 h-12 bg-[#F5D061]/10 rounded-lg flex items-center justify-center mb-4 md:mb-6 group-hover:bg-[#F5D061]/20 transition-colors service-icon">
                         <svg class="w-6 h-6 text-[#F5D061]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-russo mb-3 md:mb-4">Responsive Design</h3>
-                    <p class="text-gray-400">Ensuring your website looks and functions perfectly across all devices, from mobile phones to desktop computers.</p>
+                    <h3 class="text-xl font-russo mb-3 md:mb-4 service-title">Responsive Design</h3>
+                    <p class="text-gray-400 service-description">Ensuring your website looks and functions perfectly across all devices, from mobile phones to desktop computers.</p>
                 </div>
             </div>
         </div>
@@ -599,6 +842,200 @@
                 // This assumes you have a notification Vue component
                 // You would need to implement this part based on your notification system
                 console.log('Success message:', successMessage.dataset.message);
+            }
+            
+            // Loading screen animation
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const loadingBar = document.getElementById('loading-bar');
+            const loadingStatus = document.getElementById('loading-status');
+            let progress = 0;
+            
+            // Loading status messages
+            const statusMessages = [
+                "Initializing...",
+                "Loading assets...",
+                "Preparing content...",
+                "Finalizing...",
+                "Finalizing..."
+            ];
+            
+            // Disable scrolling while loading
+            document.body.style.overflow = 'hidden';
+            
+            // Simulate loading progress
+            const loadingInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                loadingBar.style.width = `${progress}%`;
+                
+                // Update status message based on progress
+                if (progress < 20) {
+                    loadingStatus.textContent = statusMessages[0];
+                } else if (progress < 40) {
+                    loadingStatus.textContent = statusMessages[1];
+                } else if (progress < 60) {
+                    loadingStatus.textContent = statusMessages[2];
+                } else if (progress < 80) {
+                    loadingStatus.textContent = statusMessages[3];
+                } else {
+                    loadingStatus.textContent = statusMessages[4];
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                    
+                    // Add a small delay before hiding the overlay
+                    setTimeout(() => {
+                        // Fade out the overlay
+                        loadingOverlay.style.opacity = '0';
+                        loadingOverlay.style.transition = 'opacity 0.5s ease-out';
+                        
+                        // Enable scrolling
+                        document.body.style.overflow = '';
+                        
+                        // Remove the overlay after fade out
+                        setTimeout(() => {
+                            loadingOverlay.style.display = 'none';
+                            
+                            // Trigger hero animations
+                            triggerHeroAnimations();
+                            
+                            // Start typing effect for code snippet
+                            startTypingEffect();
+                        }, 500);
+                    }, 500);
+                }
+            }, 200);
+            
+            // Function to trigger hero animations
+            function triggerHeroAnimations() {
+                // Add active class to fade-in elements with staggered delay
+                const fadeElements = document.querySelectorAll('.fade-in');
+                fadeElements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('active');
+                    }, 100 * index);
+                });
+                
+                // Add active class to slide-in elements
+                const slideElements = document.querySelectorAll('.slide-in-left, .slide-in-right');
+                slideElements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('active');
+                    }, 300 + (100 * index));
+                });
+            }
+            
+            // Function to create typing effect for code snippet
+            function startTypingEffect() {
+                const codeSnippet = document.getElementById('code-snippet');
+                if (!codeSnippet) return;
+                
+                // Simply add the visible class after a delay
+                setTimeout(() => {
+                    codeSnippet.classList.add('visible');
+                }, 500);
+            }
+            
+            // Scroll animation for services section
+            function handleScrollAnimations() {
+                const serviceCards = document.querySelectorAll('.service-card');
+                const sectionTitle = document.querySelector('.section-title');
+                const sectionSubtitle = document.querySelector('.section-subtitle');
+                const triggerPoint = window.innerHeight * 0.8;
+                
+                // Check if section title and subtitle are in view
+                if (sectionTitle && sectionSubtitle) {
+                    const titleTop = sectionTitle.getBoundingClientRect().top;
+                    
+                    if (titleTop < triggerPoint) {
+                        // Animate title first
+                        sectionTitle.classList.add('visible');
+                        
+                        // Then animate subtitle with a slight delay
+                        setTimeout(() => {
+                            sectionSubtitle.classList.add('visible');
+                        }, 200);
+                    }
+                }
+                
+                serviceCards.forEach((card, index) => {
+                    const cardTop = card.getBoundingClientRect().top;
+                    
+                    if (cardTop < triggerPoint) {
+                        // Add staggered delay based on index
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                            
+                            // Add a subtle hover effect after animation
+                            card.addEventListener('mouseenter', function() {
+                                this.style.transform = 'translateY(-5px)';
+                                this.style.boxShadow = '0 10px 25px rgba(245, 208, 97, 0.15)';
+                            });
+                            
+                            card.addEventListener('mouseleave', function() {
+                                this.style.transform = 'translateY(0)';
+                                this.style.boxShadow = 'none';
+                            });
+                        }, 150 * index);
+                    }
+                });
+            }
+            
+            // Initial check for elements in view
+            handleScrollAnimations();
+            
+            // Add scroll event listener with throttling for better performance
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                if (scrollTimeout) {
+                    window.cancelAnimationFrame(scrollTimeout);
+                }
+                
+                scrollTimeout = window.requestAnimationFrame(function() {
+                    handleScrollAnimations();
+                });
+            });
+
+            // Add contact section animations
+            const contactSection = document.querySelector('.contact-section');
+            if (contactSection) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Animate contact section
+                            entry.target.classList.add('visible');
+                            
+                            // Animate info titles
+                            const infoTitles = entry.target.querySelectorAll('.info-title');
+                            infoTitles.forEach((title, index) => {
+                                setTimeout(() => {
+                                    title.classList.add('visible');
+                                }, 200 + (100 * index));
+                            });
+                            
+                            // Animate social links
+                            const socialLinks = entry.target.querySelectorAll('.social-link');
+                            socialLinks.forEach((link, index) => {
+                                setTimeout(() => {
+                                    link.classList.add('visible');
+                                }, 400 + (100 * index));
+                            });
+                            
+                            // Animate info items
+                            const infoItems = entry.target.querySelectorAll('.info-item');
+                            infoItems.forEach((item, index) => {
+                                setTimeout(() => {
+                                    item.classList.add('visible');
+                                }, 800 + (100 * index));
+                            });
+                            
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.2 });
+                
+                observer.observe(contactSection);
             }
         });
     </script>

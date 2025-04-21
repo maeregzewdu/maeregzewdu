@@ -16,19 +16,24 @@
                 <!-- Close button with better hover effect -->
                 <button 
                     @click="$emit('close')"
-                    class="absolute -top-4 -right-4 sm:top-5 sm:right-5"
+                    class="absolute -top-3 -right-3 sm:top-5 sm:right-5"
                 >
-                    <i class="ri-close-line text-lg sm:text-xl w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full cursor-pointer border border-white/10 hover:border-white/20 text-gray-300 hover:text-white hover:rotate-90 transition-all duration-300"></i>
+                    <i class="ri-close-line text-lg sm:text-xl w-8 h-fit sm:w-10 sm:h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full cursor-pointer border border-white/10 hover:border-white/20 text-gray-300 hover:text-white hover:rotate-90 transition-all duration-300"></i>
                 </button>
 
                 <!-- Modal content -->
                 <div>
                     <!-- Header with improved glowing effect -->
-                    <div class="mb-4 sm:mb-6 md:mb-8 text-center">
+                    <div class="mb-4 sm:mb-6 md:mb-8 text-center flex flex-col items-center">
                         <h3 class="text-2xl sm:text-3xl font-russo text-white mb-2 sm:mb-3 relative">
-                            Get Started with <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F5D061] to-[#e9b730] drop-shadow-[0_0_8px_rgba(245,208,97,0.5)]">{{ selectedPlan.name }}</span>
+                            Get Started with 
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F5D061] to-[#e9b730] drop-shadow-[0_0_8px_rgba(245,208,97,0.5)]">
+                                {{ selectedPlan.name }}
+                            </span>
                         </h3>
-                        <p class="text-gray-300 text-xs sm:text-sm">Fill in the form below to start your project journey</p>
+                        <p class="text-gray-300 text-xs sm:text-sm max-w-md">
+                            Fill in the form below to start your project journey
+                        </p>
                     </div>
 
                     <!-- Plan summary - enhanced glass card -->

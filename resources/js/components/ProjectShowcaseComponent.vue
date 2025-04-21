@@ -8,8 +8,8 @@
 
         <div class="container mx-auto px-4 relative">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-russo mb-4">Featured Projects</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Explore my latest work and see how I bring ideas to life
+                <h2 class="text-4xl font-russo mb-4 section-title">Featured Projects</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto section-subtitle">Explore my latest work and see how I bring ideas to life
                     through code and design.</p>
             </div>
 
@@ -19,7 +19,7 @@
                         :style="{ transform: `translateX(-${currentSlide * 100}%)` }" @mouseenter="stopAutoPlay"
                         @mouseleave="startAutoPlay">
                         <!-- Project 1 -->
-                        <div class="w-full flex-shrink-0 px-4">
+                        <div class="w-full flex-shrink-0 px-4 project-card">
                             <div
                                 class="group relative overflow-hidden bg-[#11172E] rounded-xl p-0 transition-all duration-500 max-w-[400px] mx-auto hover:shadow-[0_0_30px_rgba(245,208,97,0.15)] transform hover:-translate-y-1">
                                 <!-- Image Container -->
@@ -73,7 +73,7 @@
                         </div>
 
                         <!-- Project 2 -->
-                        <div class="w-full flex-shrink-0 px-4">
+                        <div class="w-full flex-shrink-0 px-4 project-card">
                             <div
                                 class="group relative overflow-hidden bg-[#11172E] rounded-xl p-0 transition-all duration-500 max-w-[400px] mx-auto hover:shadow-[0_0_30px_rgba(245,208,97,0.15)] transform hover:-translate-y-1">
                                 <!-- Image Container -->
@@ -127,7 +127,7 @@
                         </div>
 
                         <!-- Project 3 -->
-                        <div class="w-full flex-shrink-0 px-4">
+                        <div class="w-full flex-shrink-0 px-4 project-card">
                             <div
                                 class="group relative overflow-hidden bg-[#11172E] rounded-xl p-0 transition-all duration-500 max-w-[400px] mx-auto hover:shadow-[0_0_30px_rgba(245,208,97,0.15)] transform hover:-translate-y-1">
                                 <!-- Image Container -->
@@ -247,9 +247,83 @@ export default {
     },
     mounted() {
         this.startAutoPlay()
+        
+        // Add scroll animation observer
+        this.$nextTick(() => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add visible class to section title and subtitle
+                        const title = entry.target.querySelector('.section-title');
+                        const subtitle = entry.target.querySelector('.section-subtitle');
+                        const projectCards = entry.target.querySelectorAll('.project-card');
+                        
+                        if (title) title.classList.add('visible');
+                        
+                        setTimeout(() => {
+                            if (subtitle) subtitle.classList.add('visible');
+                        }, 200);
+                        
+                        // Animate project cards with staggered delay
+                        projectCards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('visible');
+                            }, 300 + (150 * index));
+                        });
+                        
+                        // Unobserve after animation
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+            
+            // Observe the portfolio section
+            const portfolioSection = document.getElementById('portfolio');
+            if (portfolioSection) {
+                observer.observe(portfolioSection);
+            }
+        });
     },
     beforeUnmount() {
         this.stopAutoPlay()
     }
 }
 </script>
+
+<style scoped>
+/* Project card animations */
+.project-card {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.project-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Section title animations */
+.section-title {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.section-title.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section-subtitle {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-delay: 0.2s;
+}
+
+.section-subtitle.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
