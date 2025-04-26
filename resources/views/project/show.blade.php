@@ -24,7 +24,7 @@
                     <div class="md:w-1/2 relative">
                         <div class="aspect-video md:h-full relative overflow-hidden">
                             @if($project['thumbnail'])
-                                <img src="{{ $project['thumbnail'] }}" alt="{{ $project['title'] }}" class="w-full h-full object-cover">
+                                <img src="{{ asset($project['thumbnail']) }}" alt="{{ $project['title'] }}" class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-[#1A2332]">
                                     <i class="ri-image-line text-6xl text-gray-500"></i>
@@ -180,7 +180,7 @@
                         @endphp
                         @foreach($images as $image)
                             <div class="aspect-video rounded-lg overflow-hidden bg-[#0F172A] border border-white/5 group relative">
-                                <img src="{{ $image['url'] }}" alt="Project Image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <img src="{{ asset($image['url']) }}" alt="Project Image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                             </div>
                         @endforeach                    
                     </div>
