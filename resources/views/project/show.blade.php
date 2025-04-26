@@ -123,17 +123,31 @@
             </div>
             
             <!-- Project Details Section -->
-            <div class="bg-[#1A2332]/85 backdrop-blur-md rounded-xl border border-white/10 p-6 md:p-8 mb-8 md:mb-12">
+            <div class="bg-[#1A2332]/85 backdrop-blur-md rounded-xl border border-white/10 p-6 md:p-8 mb-16 md:mb-20">
                 <h2 class="text-xl md:text-2xl font-russo mb-4 text-white">Project Overview</h2>
                 <div class="prose prose-invert max-w-none">
                     <p class="text-gray-300">{{ $project['description'] }}</p>
                 </div>
                 
-                @if($project['challenge'])
-                    <h2 class="text-xl md:text-xl font-russo mb-4 mt-8 text-white">The Challenge</h2>
-                    <div class="prose prose-invert max-w-none">
-                        <p class="text-gray-300">{{ $project['challenge'] }}</p>
-                    </div>
+                @if($project['features'])
+                    <h2 class="text-xl md:text-xl font-russo mb-4 mt-8 text-white">Features</h2>
+                    @php
+                        $features = is_string($project['features']) ? json_decode($project['features'], true) : $project['features'];
+                    @endphp
+                    <div class="space-y-4">
+                        @foreach ($features as $feature)
+                            <div class="flex items-start gap-2">
+                                <div class="text-amber-400 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    {{ $feature }}
+                                </p>
+                            </div>                    
+                        @endforeach
+                    <div>
                 @endif
                 
                 @if($project['solution'])
@@ -153,17 +167,22 @@
             
             <!-- Project Gallery -->
             @if(isset($project['gallery']) && $project['gallery'] > 0)
-                <div class="bg-[#1A2332]/85 backdrop-blur-md rounded-xl border border-white/10 p-6 md:p-8 mb-8 md:mb-12">
+                <div class="pt-6 md:pt-8 mb-8 md:mb-12">
                     <h2 class="text-xl md:text-2xl font-russo mb-6 text-white">Project Gallery</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @php
-                            $images = is_string($project['gallery']) ? json_decode($project['technologies'], true) : $project['technologies'];
+                            $images = is_string($project['gallery']) ? json_decode($project['gallery'], true) : $project['gallery'];
+
+                            // Sort the images by 'position'
+                            usort($images, function ($a, $b) {
+                                return $a['position'] <=> $b['position'];
+                            });
                         @endphp
                         @foreach($images as $image)
                             <div class="aspect-video rounded-lg overflow-hidden bg-[#0F172A] border border-white/5 group relative">
-                                <img src="{{ $image }}" alt="Project Image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <img src="{{ $image['url'] }}" alt="Project Image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                             </div>
-                        @endforeach
+                        @endforeach                    
                     </div>
                 </div>
             @endif

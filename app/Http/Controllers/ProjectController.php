@@ -254,7 +254,7 @@ class ProjectController extends Controller
         $validated['gallery'] = json_encode($gallery);
 
         // Handle featured status
-        $validated['is_featured'] = $request->is_featured ? 1 : 0;
+        $validated['is_featured'] = $request->is_featured === true ? 1 : 0;
 
         // Encode array fields as JSON
         $validated['technologies'] = json_encode($validated['technologies']);

@@ -50,20 +50,20 @@
                                     </div>
 
                                     <!-- Project Info -->
-                                    <h3
+                                    <a href="/projects/1"
                                         class="text-xl font-russo mb-2 text-white group-hover:text-[#F5D061] transition-colors">
-                                        TenaMart - Online Pharmacy</h3>
+                                        TenaMart - Online Pharmacy</a>
                                     <p class="text-gray-400 text-sm mb-5">A modern e-commerce solution with advanced
                                         features and seamless user experience.</p>
 
                                     <!-- Actions -->
                                     <div class="flex justify-between items-center">
-                                        <a href="#"
+                                        <a href="/projects/1"
                                             class="inline-flex items-center gap-1 text-[#F5D061] text-sm font-medium transition-all duration-300 hover:gap-2">
                                             View Project
                                             <i class="ri-arrow-right-line"></i>
                                         </a>
-                                        <a href="#"
+                                        <a href="/projects/1"
                                             class="w-9 h-9 rounded-full flex items-center justify-center bg-[#F5D061]/10 hover:bg-[#F5D061]/20 transition-colors">
                                             <i class="ri-external-link-line text-[#F5D061]"></i>
                                         </a>
@@ -104,74 +104,20 @@
                                     </div>
 
                                     <!-- Project Info -->
-                                    <h3
+                                    <a href="/projects/2"
                                         class="text-xl font-russo mb-2 text-white group-hover:text-[#F5D061] transition-colors">
-                                        DBS Library - Library Management System</h3>
+                                        DBS Library - Library Management System</a>
                                     <p class="text-gray-400 text-sm mb-5">A modern library management system with
                                         advanced features like book borrowing, reservation, and analytics.</p>
 
                                     <!-- Actions -->
                                     <div class="flex justify-between items-center">
-                                        <a href="#"
+                                        <a href="/projects/2"
                                             class="inline-flex items-center gap-1 text-[#F5D061] text-sm font-medium transition-all duration-300 hover:gap-2">
                                             View Project
                                             <i class="ri-arrow-right-line"></i>
                                         </a>
-                                        <a href="#"
-                                            class="w-9 h-9 rounded-full flex items-center justify-center bg-[#F5D061]/10 hover:bg-[#F5D061]/20 transition-colors">
-                                            <i class="ri-external-link-line text-[#F5D061]"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 3 -->
-                        <div class="w-full flex-shrink-0 px-4 project-card">
-                            <div
-                                class="group relative overflow-hidden bg-[#11172E] rounded-xl p-0 transition-all duration-500 max-w-[400px] mx-auto hover:shadow-[0_0_30px_rgba(245,208,97,0.15)] transform hover:-translate-y-1">
-                                <!-- Image Container -->
-                                <div class="relative h-52 overflow-hidden">
-                                    <img :src="'/images/projects/habi.png'" alt="Project 3"
-                                        class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                                    <!-- Overlay -->
-                                    <div
-                                        class="absolute inset-0 bg-gradient-to-t from-[#0F172A]/90 via-[#0F172A]/40 to-transparent opacity-40 group-hover:opacity-60 transition-opacity duration-500">
-                                    </div>
-                                    <!-- Feature badge -->
-                                    <div class="absolute top-4 right-4">
-                                        <span
-                                            class="bg-[#F5D061]/90 text-black text-xs font-bold px-3 py-1 rounded-full">Featured</span>
-                                    </div>
-                                </div>
-
-                                <!-- Content -->
-                                <div class="relative z-10 p-6 pt-5">
-                                    <!-- Tech stack badges -->
-                                    <div class="flex flex-wrap gap-2 mb-3 -mt-8">
-                                        <span
-                                            class="bg-[#1A2332] text-[#F5D061] text-xs px-3 py-1 rounded-full border border-[#F5D061]/20">Laravel</span>
-                                        <span
-                                            class="bg-[#1A2332] text-[#F5D061] text-xs px-3 py-1 rounded-full border border-[#F5D061]/20">Vue.js</span>
-                                        <span
-                                            class="bg-[#1A2332] text-[#F5D061] text-xs px-3 py-1 rounded-full border border-[#F5D061]/20">Tailwind</span>
-                                    </div>
-
-                                    <!-- Project Info -->
-                                    <h3
-                                        class="text-xl font-russo mb-2 text-white group-hover:text-[#F5D061] transition-colors">
-                                        Habi - Pending Project</h3>
-                                    <p class="text-gray-400 text-sm mb-5">A modern water-proofing company e-commerce
-                                        website</p>
-
-                                    <!-- Actions -->
-                                    <div class="flex justify-between items-center">
-                                        <a href="#"
-                                            class="inline-flex items-center gap-1 text-[#F5D061] text-sm font-medium transition-all duration-300 hover:gap-2">
-                                            View Project
-                                            <i class="ri-arrow-right-line"></i>
-                                        </a>
-                                        <a href="#"
+                                        <a href="/projects/2"
                                             class="w-9 h-9 rounded-full flex items-center justify-center bg-[#F5D061]/10 hover:bg-[#F5D061]/20 transition-colors">
                                             <i class="ri-external-link-line text-[#F5D061]"></i>
                                         </a>
@@ -184,7 +130,7 @@
 
                 <!-- Navigation Dots -->
                 <div class="flex justify-center gap-2 mt-8">
-                    <button v-for="(_, index) in 3" :key="index" @click="currentSlide = index"
+                    <button v-for="(_, index) in 2" :key="index" @click="currentSlide = index"
                         class="w-2.5 h-2.5 rounded-full transition-all duration-300"
                         :class="currentSlide === index ? 'bg-[#F5D061] w-8' : 'bg-gray-600 hover:bg-gray-500'">
                     </button>
@@ -215,7 +161,7 @@ export default {
     data() {
         return {
             currentSlide: 0,
-            totalSlides: 3,
+            totalSlides: 2,
             autoPlay: true,
             interval: null
         }
