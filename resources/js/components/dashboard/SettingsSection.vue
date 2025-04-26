@@ -89,14 +89,6 @@
                             />
                         </div>
                         
-                        <!-- Bio -->
-                        <form-input
-                            v-model="myInfo.bio"
-                            label="Bio"
-                            type="textarea"
-                            placeholder="Tell us about yourself..."
-                        />
-                        
                         <!-- Save Button -->
                         <div class="flex justify-end pt-2">
                             <button 

@@ -8,6 +8,7 @@ use App\Models\ContactMessage;
 use App\Models\MyInfo;
 use App\Models\Plan;
 use App\Models\SocialLink;
+use App\Models\Project;
 
 class DashboardController extends Controller
 {
@@ -85,9 +86,9 @@ class DashboardController extends Controller
                         : 0;
         
         // Sample active projects and revenue (replace with real data in production)
-        $activeProjects = 7;
-        $projectIncrease = 15;
-        $revenue = 45000;
+        $activeProjects = Project::count();
+        $projectIncrease = Project::where('created_at', '>=', now()->subDays(30))->count();
+        $revenue = Plan::sum('price');
         $revenueIncrease = 18;
         
         return [
@@ -106,9 +107,6 @@ class DashboardController extends Controller
         ];
     }
     
-    /**
-     * Get all leads for leads tab
-     */
     public function getLeads(Request $request)
     {
         $query = Lead::orderBy('created_at', 'desc');
@@ -168,9 +166,6 @@ class DashboardController extends Controller
         ];
     }
     
-    /**
-     * Get all messages for messages tab
-     */
     public function getMessages(Request $request)
     {
         $query = ContactMessage::orderBy('created_at', 'desc')->where('status', '!=', 'deleted');
@@ -345,6 +340,133 @@ class DashboardController extends Controller
             'myInfo' => $myInfo,
             'plans' => $plans,
             'socialLinks' => $socialLinks
+        ];
+    }
+
+    public function getProjects(Request $request)
+    {
+        $query = Project::orderBy('created_at', 'desc');
+        
+        // Apply search if search parameter is provided
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                  ->orWhere('subtitle', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%")
+                  ->orWhere('status', 'like', "%{$searchTerm}%")
+                  ->orWhere('client_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('type', 'like', "%{$searchTerm}%");
+            });
+        }
+        
+        // Get pagination parameters
+        $perPage = $request->input('per_page', 6);
+        $page = $request->input('page', 1);
+        
+        // Get paginated results
+        $paginatedProjects = $query->paginate($perPage, ['*'], 'page', $page);
+        
+        // Transform the data
+        $projects = $paginatedProjects->map(function($project) {
+                return [
+                    'id' => $project->id,
+                    'title' => $project->title,
+                    'slug' => $project->slug,
+                    'subtitle' => $project->subtitle,
+                    'description' => $project->description,
+                    'technologies' => $project->technologies,
+                    'features' => $project->features,
+                    'status' => $project->status,
+                    'thumbnail' => $project->thumbnail,
+                    'gallery' => $project->gallery,
+                    'type' => $project->type,
+                    'client_name' => $project->client_name,
+                    'project_url' => $project->project_url,
+                    'github_url' => $project->github_url,
+                    'is_featured' => $project->is_featured,
+                    'created_by' => $project->createdBy->name,
+                    'deleted_at' => $project->deleted_at,
+                    'created_at' => $project->created_at->diffForHumans()
+                ];
+            });
+            
+        return [
+            'projects' => $projects,
+            'pagination' => [
+                'current_page' => $paginatedProjects->currentPage(),
+                'last_page' => $paginatedProjects->lastPage(),
+                'per_page' => $paginatedProjects->perPage(),
+                'total' => $paginatedProjects->total()
+            ]
+        ];
+    }
+
+    public function filterProjects(Request $request)
+    {
+        $query = Project::query();
+
+        // Apply filters
+        if ($request->has('dateFrom') && $request->has('dateTo')) {
+            $query->whereBetween('created_at', [$request->dateFrom, $request->dateTo]);
+        }
+
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('type') && $request->type !== 'all') {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->has('search') && $request->search !== '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('subtitle', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('technologies', 'like', "%{$search}%")
+                  ->orWhere('features', 'like', "%{$search}%")
+                  ->orWhere('client_name', 'like', "%{$search}%")
+                  ->orWhere('type', 'like', "%{$search}%");
+            });
+        }
+
+        // Get paginated results
+        $perPage = $request->input('per_page', 6);
+        $paginatedProjects = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+        $projects = $paginatedProjects->map(function($project) {
+            return [
+                'id' => $project->id,
+                'title' => $project->title,
+                'slug' => $project->slug,
+                'subtitle' => $project->subtitle,
+                'description' => $project->description,
+                'technologies' => $project->technologies,
+                'features' => $project->features,
+                'status' => $project->status,
+                'thumbnail' => $project->thumbnail,
+                'gallery' => $project->gallery,
+                'type' => $project->type,
+                'client_name' => $project->client_name,
+                'project_url' => $project->project_url,
+                'github_url' => $project->github_url,
+                'is_featured' => $project->is_featured,
+                'created_by' => $project->createdBy->name,
+                'deleted_at' => $project->deleted_at,
+                'created_at' => $project->created_at->diffForHumans()
+            ];
+        });
+
+        return [
+            'projects' => $projects,
+            'pagination' => [
+                'current_page' => $paginatedProjects->currentPage(),
+                'last_page' => $paginatedProjects->lastPage(),
+                'per_page' => $paginatedProjects->perPage(),
+                'total' => $paginatedProjects->total()
+            ]
         ];
     }
 }

@@ -471,7 +471,7 @@
         <nav class="w-full">
             <div class="flex justify-between items-center px-4 sm:px-6 md:px-10 py-4 md:py-5 mx-auto max-w-[1270px] lg:rounded-xl lg:mt-4 shadow-lg backdrop-blur-xl bg-opacity-30 border border-white/10 bg-black/30">
                 <a href="/" class="text-2xl">
-                    <img src="images/logo/gold-logo.svg" alt="Maereg Zewdu Logo" class="w-[120px] sm:w-[150px] md:w-[200px] logo-img hover:opacity-90 transition-opacity">
+                    <img src="{{ asset('images/logo/gold-logo.svg') }}" alt="Maereg Zewdu Logo" class="w-[120px] sm:w-[150px] md:w-[200px] logo-img hover:opacity-90 transition-opacity">
                 </a>
     
                 <!-- Desktop Menu -->
@@ -521,7 +521,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 <!-- Logo & Info -->
                 <div class="space-y-3">
-                    <img src="images/logo/gold-logo.svg" alt="Maereg Zewdu Logo" class="w-[150px] md:w-[180px]">
+                    <img src="{{ asset('images/logo/gold-logo.svg') }}" alt="Maereg Zewdu Logo" class="w-[150px] md:w-[180px]">
                     <p class="text-gray-400 text-sm">Creating digital experiences that inspire and drive business growth.</p>
                     @include('components.social-links-compact')
                 </div>

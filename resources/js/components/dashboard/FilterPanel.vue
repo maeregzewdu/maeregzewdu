@@ -36,6 +36,12 @@
                         <option value="archived">Archived</option>
                         <option value="deleted">Deleted</option>
                     </template>
+                    <template v-if="type === 'projects'">
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </template>
                 </select>
             </div>
 
@@ -46,6 +52,17 @@
                     <option value="Basic">Basic</option>
                     <option value="Pro">Pro</option>
                     <option value="Enterprise">Enterprise</option>
+                </select>
+            </div>
+            
+            <div v-if="type === 'projects'" class="space-y-1 sm:space-y-2">
+                <label class="text-xs text-gray-400">Type</label>
+                <select v-model="filters.type" name="type" class="w-full bg-[#0A1020] border border-white/10 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#F5D061]/50">
+                    <option value="" selected>All Types</option>
+                    <option value="Website">Website</option>
+                    <option value="Mobile App">Mobile App</option>
+                    <option value="Desktop App">Desktop App</option>
+                    <option value="Design">Design</option>
                 </select>
             </div>
         </div>
@@ -68,7 +85,7 @@ export default {
         type: {
             type: String,
             required: true,
-            validator: value => ['leads', 'messages'].includes(value)
+            validator: value => ['leads', 'messages', 'projects'].includes(value)
         }
     },
     data() {
@@ -78,7 +95,8 @@ export default {
                 dateTo: '',
                 status: '',
                 category: '',
-                plan: ''
+                plan: '',
+                type: ''
             }
         }
     },
@@ -92,6 +110,10 @@ export default {
 
             if (this.type !== 'leads') {
                 delete filters.plan;
+            }
+
+            if (this.type !== 'projects') {
+                delete filters.type;
             }
 
             console.log(filters);

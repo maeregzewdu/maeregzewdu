@@ -58,6 +58,12 @@
                         <i class="ri-mail-line text-lg sm:text-xl"></i>
                         <span>Messages</span>
                     </a>
+                    <a href="#" @click.prevent="handleNavClick('projects')"
+                        class="nav-link flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-[#F5D061]/10 text-gray-300 hover:text-[#F5D061] transition-colors text-sm sm:text-base"
+                        :class="{ 'bg-[#F5D061]/10 text-[#F5D061]': activeTab === 'projects' }">
+                        <i class="ri-folder-open-line text-lg sm:text-xl"></i>
+                        <span>Projects</span>
+                    </a>
                     <a href="#" @click.prevent="handleNavClick('settings')"
                         class="nav-link flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-[#F5D061]/10 text-gray-300 hover:text-[#F5D061] transition-colors text-sm sm:text-base"
                         :class="{ 'bg-[#F5D061]/10 text-[#F5D061]': activeTab === 'settings' }">
@@ -106,6 +112,11 @@
                     :class="{ 'bg-[#F5D061]/10 text-[#F5D061]': activeTab === 'settings', 'text-gray-300': activeTab !== 'settings' }">
                     <i class="ri-settings-line text-lg sm:text-xl"></i>
                 </a>
+                <a href="#" @click.prevent="handleNavClick('projects')"
+                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center hover:bg-[#F5D061]/10 hover:text-[#F5D061] transition-colors"
+                    :class="{ 'bg-[#F5D061]/10 text-[#F5D061]': activeTab === 'projects', 'text-gray-300': activeTab !== 'projects' }">
+                    <i class="ri-folder-open-line text-lg sm:text-xl"></i>
+                </a>
                 <a href="/"
                     class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-gray-300 hover:text-[#F5D061] hover:bg-[#F5D061]/10 transition-colors">
                     <i class="ri-home-line text-lg sm:text-xl"></i>
@@ -120,7 +131,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="main-content transition-all duration-300 px-4 sm:px-6 h-[90vh]" :class="{
+        <div class="main-content transition-all duration-300 px-4 sm:px-6 h-[100vh]" :class="{
             'ml-0 mt-8': windowWidth < 640,
             'overflow-hidden': !sidebarCollapsed && windowWidth < 640,
             'overflow-y-auto': sidebarCollapsed || windowWidth >= 640,
@@ -146,14 +157,16 @@
                                 'ri-dashboard-line text-[#F5D061] text-lg sm:text-2xl': activeTab === 'dashboard',
                                 'ri-user-line text-[#F5D061] text-lg sm:text-2xl': activeTab === 'leads',
                                 'ri-mail-line text-[#F5D061] text-lg sm:text-2xl': activeTab === 'messages',
-                                'ri-settings-line text-[#F5D061] text-lg sm:text-2xl': activeTab === 'settings'
+                                'ri-settings-line text-[#F5D061] text-lg sm:text-2xl': activeTab === 'settings',
+                                'ri-folder-open-line text-[#F5D061] text-lg sm:text-2xl': activeTab === 'projects'
                             }"></i>
                         </div>
-                <div>
+                        <div>
                             <h1 class="text-lg sm:text-2xl font-russo tracking-tight">{{
                                 activeTab === 'dashboard' ? 'Dashboard' :
                                     (activeTab === 'leads' ? 'Leads Management' :
-                                        (activeTab === 'messages' ? 'Messages Management' : 'Settings'))
+                                        (activeTab === 'messages' ? 'Messages Management' :
+                                            (activeTab === 'projects' ? 'Projects Management' : 'Settings')))
                             }}</h1>
                             <p class="text-gray-400 text-[10px] sm:text-sm">Welcome back, Maereg</p>
                         </div>
@@ -167,28 +180,32 @@
                             class="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#F5D061] transition-colors">
                             <i class="ri-search-line text-sm sm:text-base"></i>
                         </div>
-                        <input type="text" :name="activeTab === 'leads' ? 'searchLeads' : 'searchMessages'"
-                            :placeholder="'Search ' + (activeTab === 'leads' ? 'leads' : 'messages') + '...'"
+                        <input type="text" :name="activeTab === 'leads' ? 'searchLeads' : (activeTab === 'projects' ? 'searchProjects' : 'searchMessages')"
+                            :placeholder="'Search ' + (activeTab === 'leads' ? 'leads' : (activeTab === 'projects' ? 'projects' : 'messages')) + '...'"
                             class="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-2.5 rounded-md bg-[#1A2332]/30 border border-white/5 text-white focus:outline-none focus:border-[#F5D061]/30 focus:bg-[#1A2332]/50 transition-all duration-300 text-sm"
                             v-model="searchQuery">
                     </div>
                     <div class="flex items-center gap-1 sm:gap-2 w-full sm:w-auto">
                         <button @click="toggleFilterPanel"
-                            class="flex-1 sm:flex-none px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-md bg-[#1A2332]/30 border border-white/5 text-white hover:bg-[#1A2332]/50 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 hover:scale-105">
+                            class="flex-1 cursor-pointer sm:flex-none px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-md bg-[#1A2332]/30 border border-white/5 text-white hover:bg-[#1A2332]/50 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 hover:scale-105">
                             <i class="ri-filter-3-line text-[#F5D061] text-sm sm:text-base"></i>
                             <span class="text-[10px] sm:text-sm">{{
                                 activeTab === 'leads' ? 'Filter Leads' :
                                     activeTab === 'messages' ? 'Filter Messages' :
-                                        'Filter'
-                            }}</span>
+                                        activeTab === 'projects' ? 'Filter Projects' :
+                                            'Filter'
+                                }}
+                            </span>
                     </button>
                         <button
-                            class="flex-1 sm:flex-none bg-[#F5D061] text-black px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-md font-russo text-[10px] sm:text-sm flex items-center justify-center gap-1 sm:gap-2 hover:bg-[#F5D061]/90 transition-all duration-300 hover:scale-105">
+                            @click="addNew(activeTab)"
+                            class="flex-1 cursor-pointer sm:flex-none bg-[#F5D061] text-black px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-md font-russo text-[10px] sm:text-sm flex items-center justify-center gap-1 sm:gap-2 hover:bg-[#F5D061]/90 transition-all duration-300 hover:scale-105">
                             <i class="ri-add-line text-sm sm:text-base"></i>
                             <span>{{
                                 activeTab === 'leads' ? 'New Lead' :
                                     activeTab === 'messages' ? 'New Message' :
-                                        'Add New'
+                                        activeTab === 'projects' ? 'New Project' :
+                                            'Add New'
                             }}</span>
                     </button>
                     </div>
@@ -196,7 +213,7 @@
             </header>
 
             <!-- Filter Panel -->
-            <FilterPanel v-if="showFilterPanel && (activeTab === 'leads' || activeTab === 'messages')" :type="activeTab"
+            <FilterPanel v-if="showFilterPanel && (activeTab === 'leads' || activeTab === 'messages' || activeTab === 'projects')" :type="activeTab"
                 @apply-filters="handleFilters" @close="showFilterPanel = false" />
 
             <!-- Dashboard Content -->
@@ -206,14 +223,14 @@
                     :is-loading="isLoading" :error-message="errorMessage" :stats="statsData"
                     @change-tab="activeTab = $event" @retry="fetchDashboardData" />
 
-            <!-- Leads Management Section -->
+                <!-- Leads Management Section -->
                 <leads-section v-if="activeTab === 'leads'" :leads="leadsData.leads" :is-loading="isLoading"
                     :error-message="errorMessage" :search-query="searchQuery" :pagination="leadsData.pagination"
                     @apply-filters="handleFilters" @retry="fetchLeadsData" @go-to-page="handlePageChange"
                     @update:leads="updateLeads" @update-lead="updateLead" @notification="handleNotification"
                     @refresh="refreshCurrentTab" @delete-lead="deleteLead" />
 
-            <!-- Messages Management Section -->
+                <!-- Messages Management Section -->
                 <messages-section v-if="activeTab === 'messages'" :messages="messagesData.messages"
                     :is-loading="isLoading" :error-message="errorMessage" :search-query="searchQuery"
                     :pagination="messagesData.pagination" @retry="fetchMessagesData" @go-to-page="handlePageChange"
@@ -223,6 +240,12 @@
                 <SettingsSection v-if="activeTab === 'settings'" :is-loading="isLoading" :my-info="settingsData.myInfo"
                     :plans="settingsData.plans" :social-links="settingsData.socialLinks" :error-message="errorMessage"
                     @retry="fetchDashboardData" @notification="handleNotification" @link-deleted="handleLinkDeleted" />
+
+                <!-- Projects Management Section -->
+                <ProjectsSection v-if="activeTab === 'projects'" :projects="projectsData.projects" :is-loading="isLoading"
+                    :error-message="errorMessage" :search-query="searchQuery" :pagination="projectsData.pagination"
+                    @apply-filters="handleFilters" @retry="fetchProjectsData" @go-to-page="handlePageChange"
+                    @refresh="fetchProjectsData(true)" @notification="handleNotification" />
 
             </div>
         </div>
@@ -236,6 +259,7 @@ import MessagesSection from './dashboard/MessagesSection.vue';
 import FilterPanel from './dashboard/FilterPanel.vue';
 import SettingsSection from './dashboard/SettingsSection.vue';
 import ConfirmationModal from './dashboard/ConfirmationModal.vue';
+import ProjectsSection from './dashboard/ProjectsSection.vue';
 import axios from 'axios';
 
 export default {
@@ -246,6 +270,7 @@ export default {
         MessagesSection,
         FilterPanel,
         SettingsSection,
+        ProjectsSection,
         ConfirmationModal
     },
     data() {
@@ -265,7 +290,8 @@ export default {
             filters: {},
             lastFetch: {
                 leads: null,
-                messages: null
+                messages: null,
+                projects: null
             },
             pagination: {
                 leads: {
@@ -275,6 +301,12 @@ export default {
                     total: 0
                 },
                 messages: {
+                    current_page: 1,
+                    last_page: 1,
+                    per_page: 6,
+                    total: 0
+                },
+                projects: {
                     current_page: 1,
                     last_page: 1,
                     per_page: 6,
@@ -305,6 +337,15 @@ export default {
             },
             messagesData: {
                 messages: [],
+                pagination: {
+                    current_page: 1,
+                    last_page: 1,
+                    per_page: 6,
+                    total: 0
+                }
+            },
+            projectsData: {
+                projects: [],
                 pagination: {
                     current_page: 1,
                     last_page: 1,
@@ -353,7 +394,10 @@ export default {
         handleResize() {
             this.windowWidth = window.innerWidth;
         },
+        
         handleNavClick(tab) {
+            this.searchQuery = '';
+            this.filters = {};
             this.activeTab = tab;
             // Only collapse sidebar on mobile
             if (this.windowWidth < 640) {
@@ -370,8 +414,13 @@ export default {
                 this.fetchMessagesData(true);
             } else if (tab === 'dashboard') {
                 this.fetchDashboardData();
+            } else if (tab === 'projects') {
+                this.fetchProjectsData(true);
+            } else if (tab === 'settings') {
+                this.fetchSettingsData();
             }
         },
+
         toggleFilterPanel() {
             this.showFilterPanel = !this.showFilterPanel;
         },
@@ -437,6 +486,8 @@ export default {
                     this.fetchLeadsData(true);
                 } else if (this.activeTab === 'messages') {
                     this.fetchMessagesData(true);
+                } else if (this.activeTab === 'projects') {
+                    this.fetchProjectsData(true);
                 }
             }, 300); // 300ms debounce delay
         },
@@ -450,7 +501,10 @@ export default {
                     await this.fetchLeadsData(true, this.filters);
                 } else if (this.activeTab === 'messages') {
                     await this.fetchMessagesData(true, this.filters);
+                } else if (this.activeTab === 'projects') {
+                    await this.fetchProjectsData(true, this.filters);
                 }
+
                 this.showFilterPanel = false;
             } catch (error) {
                 console.error('Error applying filters:', error);
@@ -563,6 +617,62 @@ export default {
                     this.isLoading = false;
             }
         },
+        
+        async fetchProjectsData(force = false, filters = {}, page = 1) {
+            const hasFilters = filters && Object.keys(filters).length > 0;
+
+            // Only skip fetching if we have recent data and no filters/search query
+            if (!force && this.lastFetch.projects &&
+                (Date.now() - this.lastFetch.projects) < 300000 &&
+                !this.searchQuery &&
+                page === this.projectsData.pagination.current_page &&
+                !hasFilters) {
+                return;
+            }
+
+            this.isLoading = true;
+            this.errorMessage = null;
+
+            try {
+                const searchParams = new URLSearchParams();
+
+                // Apply filters if they exist
+                if (hasFilters) {
+                    Object.entries(filters).forEach(([key, value]) => {
+                        if (value !== '') {
+                            searchParams.append(key, value);
+                        }
+                    });
+                } else if (this.searchQuery) {
+                    // If no filters, but a search query exists
+                    searchParams.append('search', this.searchQuery);
+                }
+
+                // Always add pagination parameters
+                searchParams.append('page', page);
+                searchParams.append('per_page', this.projectsData.pagination.per_page);
+
+                // Determine the correct endpoint based on filters
+                const endpoint = hasFilters
+                    ? `/api/dashboard/projects/filter?${searchParams.toString()}`
+                    : `/api/dashboard/projects?${searchParams.toString()}`;
+
+                console.log(endpoint);
+
+                const data = await this.makeApiRequest(endpoint);
+
+                
+                // Update the projects data and pagination
+                this.projectsData.projects = data.projects;
+                this.projectsData.pagination = data.pagination;
+                this.lastFetch.projects = Date.now();
+            } catch (error) {
+                this.errorMessage = 'Failed to load projects data. Please try again.';
+                console.error('Error fetching projects data:', error);
+            } finally {
+                    this.isLoading = false;
+            }
+        },
 
         // Pagination methods
         handlePageChange(page) {
@@ -570,6 +680,8 @@ export default {
                 this.fetchLeadsData(true, {}, page);
             } else if (this.activeTab === 'messages') {
                 this.fetchMessagesData(true, {}, page);
+            } else if (this.activeTab === 'projects') {
+                this.fetchProjectsData(true, {}, page);
             }
         },
 
@@ -584,6 +696,9 @@ export default {
                     break;
                 case 'messages':
                     this.fetchMessagesData(true);
+                    break;
+                case 'projects':
+                    this.fetchProjectsData(true);
                     break;
             }
         },
@@ -616,16 +731,21 @@ export default {
             try {
                 const endpoint = this.activeTab === 'leads'
                     ? '/api/dashboard/leads/filter'
-                    : '/api/dashboard/messages/filter';
+                    : this.activeTab === 'messages'
+                        ? '/api/dashboard/messages/filter'
+                        : '/api/dashboard/projects/filter';
 
                 const response = await axios.get(endpoint, { params: filters });
 
                 if (this.activeTab === 'leads') {
                     this.leads = response.data.leads;
                     this.leadsPagination = response.data.pagination;
-                } else {
+                } else if (this.activeTab === 'messages') {
                     this.messages = response.data.messages;
                     this.messagesPagination = response.data.pagination;
+                } else if (this.activeTab === 'projects') {
+                    this.projects = response.data.projects;
+                    this.projectsPagination = response.data.pagination;
                 }
             } catch (error) {
                 console.error('Error applying filters:', error);
@@ -777,6 +897,15 @@ export default {
                 this.isLoading = false;
                 this.showLogoutModal = false;
             }
+        },
+        addNew(tab) {
+            if (tab === 'leads') {
+                this.$emit('add-new-lead');
+            } else if (tab === 'messages') {
+                this.$emit('add-new-message');
+            } else if (tab === 'projects') {
+                window.location.href = '/projects/create';
+            }
         }
     },
     watch: {
@@ -795,6 +924,8 @@ export default {
                 this.fetchLeadsData();
             } else if (newTab === 'messages') {
                 this.fetchMessagesData();
+            } else if (newTab === 'projects') {
+                this.fetchProjectsData();
             } else if (newTab === 'settings') {
                 this.fetchSettingsData();
             }
