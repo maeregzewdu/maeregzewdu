@@ -166,8 +166,8 @@ class ProjectController extends Controller
 
         // Handle thumbnail
         if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('thumbnails', 'public');
-            $validated['thumbnail'] = Storage::url($path);
+            $path = $request->file('thumbnail')->store('images/thumbnails', 'public_uploads');
+            $validated['thumbnail'] = asset($path);
         } elseif ($request->filled('existing_thumbnail')) {
             $validated['thumbnail'] = $request->input('existing_thumbnail');
         }
@@ -235,13 +235,16 @@ class ProjectController extends Controller
                     }
                     
                     if ($file) {
-                        // Process new file upload
-                        $path = $file->store('gallery', 'public');
+                        $path = $file->storeAs(
+                            'images/gallery', // Save into public/images/gallery
+                            $file->hashName(), // Keep unique file names
+                            'public_uploads'   // NEW disk we define (maps to public/)
+                        );
+                    
                         $gallery[] = [
-                            'url' => Storage::url($path),
+                            'url' => asset($path),
                             'position' => $item['position'],
                         ];
-                        Log::info("Processed new file (store): index {$index}");
                     } else {
                         Log::warning("No file found for gallery index {$index} in store method despite type being 'new'");
                     }
@@ -394,12 +397,15 @@ class ProjectController extends Controller
         if ($request->hasFile('thumbnail')) {
             // Delete old thumbnail if exists
             if ($project->thumbnail) {
-                $oldPath = str_replace('/storage/', '', $project->thumbnail);
-                Storage::disk('public')->delete($oldPath);
+                $oldPath = public_path($project->thumbnail);
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
             }
-        
-            $path = $request->file('thumbnail')->store('thumbnails', 'public');
-            $validated['thumbnail'] = Storage::url($path);
+
+            // Save the new thumbnail
+            $path = $request->file('thumbnail')->store('images/thumbnails', 'public_uploads');
+            $validated['thumbnail'] = $path; // already relative to /public
         } elseif ($request->filled('existing_thumbnail')) {
             $validated['thumbnail'] = $request->input('existing_thumbnail');
         }
@@ -424,8 +430,10 @@ class ProjectController extends Controller
             foreach ($currentGallery as $item) {
                 $url = is_array($item) ? ($item['url'] ?? '') : $item;
                 if (!empty($url)) {
-                    $oldPath = str_replace('/storage/', '', $url);
-                    Storage::disk('public')->delete($oldPath);
+                    $oldPath = public_path($url);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
                 }
             }
             $validated['gallery'] = json_encode([]);
@@ -492,27 +500,28 @@ class ProjectController extends Controller
                     if ($type === 'new') {
                         // Try to get the file from the uploaded files array
                         $file = isset($uploadedFiles[$index]) ? $uploadedFiles[$index] : null;
-                        
+                    
                         // If not found, try alternate methods
                         if (!$file) {
                             $file = $this->getFileFromRequest($request, $index);
                         }
-                        
+                    
                         if ($file) {
-                            // Process new file upload
-                            $path = $file->store('gallery', 'public');
+                            // Store the file using your custom disk and folder
+                            $path = $file->store('gallery', 'public_uploads');
+                    
+                            // Save the relative path to the database
                             $gallery[] = [
                                 'id' => $item['id'],
-                                'url' => Storage::url($path),
+                                'url' => public_url($path),  
                                 'position' => $item['position'],
                             ];
-                            
+                    
                             Log::info("Processed new file: index {$index}");
                         } else {
                             Log::warning("No file found for gallery index {$index} despite type being 'new'");
                         }
                     } else if ($type === 'existing') {
-                        // Get the URL from the existing gallery or request
                         $url = null;
                         
                         // Try to get from request input if available
@@ -575,8 +584,10 @@ class ProjectController extends Controller
                 // Delete any removed existing images
                 foreach ($existingGalleryMap as $url => $item) {
                     if (!in_array($url, $usedExistingImages)) {
-                        $oldPath = str_replace('/storage/', '', $url);
-                        Storage::disk('public')->delete($oldPath);
+                        $oldPath = public_path($url);
+                        if (file_exists($oldPath)) {
+                            unlink($oldPath);
+                        }
                     }
                 }
                 
