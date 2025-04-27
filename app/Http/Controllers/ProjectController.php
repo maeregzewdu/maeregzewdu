@@ -513,7 +513,7 @@ class ProjectController extends Controller
                             // Save the relative path to the database
                             $gallery[] = [
                                 'id' => $item['id'],
-                                'url' => public_url($path),  
+                                'url' => $path,  
                                 'position' => $item['position'],
                             ];
                     
