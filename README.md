@@ -1,13 +1,11 @@
 # Hi, I'm Maereg Zewdu
 
-I'm an 18-year-old founder and builder from Ethiopia. Right now, most of my time goes into building [TenaMart](https://tenamart.com), a platform that connects pharmacies with customers. The goal is to make healthcare access faster, easier, and more transparent here.
+I'm a 19-year-old entrepreneur from Ethiopia. Right now, most of my time goes into building [TenaMart](https://tenamart.et), a platform that connects pharmacies with customers. The goal is to make healthcare access faster, easier, and more transparent here.
 
 
 ## What I'm working on
-- Building out the TenaMart MVP and onboarding our first pharmacies
+- Building out TenaMart and onboarding our first set of pharmacies
 - Talking to investors and partners
-- Learning more about Laravel, Vue, and the whole process of actually shipping products
-
 
 ## Learning
 - Business skills
